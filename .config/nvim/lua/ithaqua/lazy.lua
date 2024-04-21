@@ -11,10 +11,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("ithaqua.plugins", { import = "ithaqua.plugins.lsp" }, {
+require("lazy").setup({ { import = "ithaqua.plugins" }, { import = "ithaqua.plugins.lsp" } }, {
   checker = {
     enabled = true,
-    notify = true,
+    notify = false,
   },
   change_detection = {
     notify = false,
