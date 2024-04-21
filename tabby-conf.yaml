@@ -1,0 +1,241 @@
+version: 7
+profiles: []
+groups: []
+hotkeys:
+  toggle-window:
+    - Ctrl-Space
+  copy-current-path: []
+  ctrl-c:
+    - Ctrl-C
+  copy:
+    - ⌘-C
+  paste:
+    - ⌘-V
+  clear:
+    - ⌘-K
+  select-all:
+    - ⌘-A
+  zoom-in:
+    - ⌘-=
+    - ⌘-Shift-=
+  zoom-out:
+    - ⌘--
+    - ⌘-Shift--
+  reset-zoom:
+    - ⌘-0
+  home:
+    - ⌘-Left
+    - Home
+  end:
+    - ⌘-Right
+    - End
+  previous-word:
+    - ⌥-Left
+  next-word:
+    - ⌥-Right
+  delete-previous-word:
+    - ⌥-Backspace
+  delete-line:
+    - ⌘-Backspace
+  delete-next-word:
+    - ⌥-Delete
+  search:
+    - ⌘-F
+  pane-focus-all:
+    - ⌘-Shift-I
+  focus-all-tabs:
+    - ⌘-⌥-Shift-I
+  scroll-to-top:
+    - Shift-PageUp
+  scroll-up:
+    - ⌥-PageUp
+  scroll-down:
+    - ⌥-PageDown
+  scroll-to-bottom:
+    - Shift-PageDown
+  restart-telnet-session: []
+  restart-ssh-session: []
+  launch-winscp: []
+  settings-tab: {}
+  settings:
+    - ⌘-,
+  serial:
+    - Alt-K
+  restart-serial-session: []
+  new-tab:
+    - ⌘-T
+  new-window:
+    - ⌘-N
+  profile: {}
+  profile-selectors: {}
+  toggle-fullscreen:
+    - Ctrl+⌘+F
+  close-tab:
+    - ⌘-W
+  reopen-tab:
+    - ⌘-Shift-T
+  toggle-last-tab: []
+  rename-tab:
+    - ⌘-R
+  previous-tab:
+    - Ctrl-Shift-Tab
+    - ⌥-Shift-Left
+  move-tab-left:
+    - ⌥-Shift-PageUp
+  move-tab-right:
+    - ⌥-Shift-PageDown
+  rearrange-panes:
+    - Ctrl-Shift
+  tab-1:
+    - ⌘-1
+  tab-2:
+    - ⌘-2
+  tab-3:
+    - ⌘-3
+  tab-4:
+    - ⌘-4
+  tab-5:
+    - ⌘-5
+  tab-6:
+    - ⌘-6
+  tab-7:
+    - ⌘-7
+  tab-8:
+    - ⌘-8
+  tab-9:
+    - ⌘-9
+  tab-10: []
+  duplicate-tab: []
+  restart-tab: []
+  reconnect-tab: []
+  disconnect-tab: []
+  explode-tab:
+    - ⌘-Shift-.
+  combine-tabs:
+    - ⌘-Shift-,
+  tab-11: []
+  tab-12: []
+  tab-13: []
+  tab-14: []
+  tab-15: []
+  tab-16: []
+  tab-17: []
+  tab-18: []
+  tab-19: []
+  tab-20: []
+  split-right:
+    - ⌘-Shift-D
+  split-bottom:
+    - ⌘-D
+  split-left:
+    - ⌘-Shift-S
+  split-top:
+    - ⌘-S
+  pane-nav-right:
+    - ⌘-Shift-Right
+  pane-nav-down:
+    - ⌘-Shift-Down
+  pane-nav-up:
+    - ⌘-Shift-Up
+  pane-nav-left:
+    - ⌘-Shift-Left
+  pane-nav-previous:
+    - ⌘-⌥-[
+  pane-nav-next:
+    - ⌘-⌥-]
+  pane-nav-1: []
+  pane-nav-2: []
+  pane-nav-3: []
+  pane-nav-4: []
+  pane-nav-5: []
+  pane-nav-6: []
+  pane-nav-7: []
+  pane-nav-8: []
+  pane-nav-9: []
+  pane-maximize:
+    - ⌘-⌥-Enter
+  close-pane:
+    - ⌘-Shift-W
+  pane-increase-vertical: []
+  pane-decrease-vertical: []
+  pane-increase-horizontal: []
+  pane-decrease-horizontal: []
+  profile-selector:
+    - ⌘-E
+  switch-profile:
+    - ⌘-Shift-E
+  command-selector:
+    - ⌥-Shift-P
+  next-tab:
+    - Ctrl-Tab
+    - ⌥-Shift-Right
+terminal:
+  searchOptions: {}
+  colorScheme:
+    name: Argonaut
+    foreground: '#fffaf4'
+    background: '#0e1019'
+    cursor: '#ff0018'
+    colors:
+      - '#232323'
+      - '#ff000f'
+      - '#8ce10b'
+      - '#ffb900'
+      - '#008df8'
+      - '#6d43a6'
+      - '#00d8eb'
+      - '#ffffff'
+      - '#444444'
+      - '#ff2740'
+      - '#abe15b'
+      - '#ffd242'
+      - '#0092ff'
+      - '#9a5feb'
+      - '#67fff0'
+      - '#ffffff'
+  font: MesloLGS Nerd Font
+  fontSize: 11
+  customColorSchemes: []
+  lightColorScheme:
+    name: AtomOneLight
+    foreground: '#2a2c33'
+    background: '#f9f9f9'
+    cursor: '#bbbbbb'
+    colors:
+      - '#000000'
+      - '#de3e35'
+      - '#3f953a'
+      - '#d2b67c'
+      - '#2f5af3'
+      - '#950095'
+      - '#3f953a'
+      - '#bbbbbb'
+      - '#000000'
+      - '#de3e35'
+      - '#3f953a'
+      - '#d2b67c'
+      - '#2f5af3'
+      - '#a00095'
+      - '#3f953a'
+      - '#ffffff'
+ssh: {}
+configSync:
+  parts: {}
+clickableLinks: {}
+accessibility: {}
+appearance: {}
+hacks: {}
+providerBlacklist: []
+commandBlacklist: []
+enableWelcomeTab: false
+pluginBlacklist: []
+profileDefaults:
+  ssh:
+    disableDynamicTitle: true
+profileBlacklist: []
+vault:
+  version: 1
+  contents: USsHvW/LbF9mGK1qEBUH1w==
+  keySalt: 4917b224ca0214ba
+  iv: a0d23ecd36a1a5b7d8ef8b699b51a18f
+

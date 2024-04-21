@@ -1,1 +1,2 @@
-print("hello")
+require("ithaqua.core")
+require("ithaqua.lazy")
