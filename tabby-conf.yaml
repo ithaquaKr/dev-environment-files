@@ -173,51 +173,51 @@ terminal:
   searchOptions: {}
   colorScheme:
     name: Argonaut
-    foreground: '#fffaf4'
-    background: '#0e1019'
-    cursor: '#ff0018'
+    foreground: "#fffaf4"
+    background: "#0e1019"
+    cursor: "#ff0018"
     colors:
-      - '#232323'
-      - '#ff000f'
-      - '#8ce10b'
-      - '#ffb900'
-      - '#008df8'
-      - '#6d43a6'
-      - '#00d8eb'
-      - '#ffffff'
-      - '#444444'
-      - '#ff2740'
-      - '#abe15b'
-      - '#ffd242'
-      - '#0092ff'
-      - '#9a5feb'
-      - '#67fff0'
-      - '#ffffff'
+      - "#232323"
+      - "#ff000f"
+      - "#8ce10b"
+      - "#ffb900"
+      - "#008df8"
+      - "#6d43a6"
+      - "#00d8eb"
+      - "#ffffff"
+      - "#444444"
+      - "#ff2740"
+      - "#abe15b"
+      - "#ffd242"
+      - "#0092ff"
+      - "#9a5feb"
+      - "#67fff0"
+      - "#ffffff"
   font: MesloLGS Nerd Font
   fontSize: 11
   customColorSchemes: []
   lightColorScheme:
     name: AtomOneLight
-    foreground: '#2a2c33'
-    background: '#f9f9f9'
-    cursor: '#bbbbbb'
+    foreground: "#2a2c33"
+    background: "#f9f9f9"
+    cursor: "#bbbbbb"
     colors:
-      - '#000000'
-      - '#de3e35'
-      - '#3f953a'
-      - '#d2b67c'
-      - '#2f5af3'
-      - '#950095'
-      - '#3f953a'
-      - '#bbbbbb'
-      - '#000000'
-      - '#de3e35'
-      - '#3f953a'
-      - '#d2b67c'
-      - '#2f5af3'
-      - '#a00095'
-      - '#3f953a'
-      - '#ffffff'
+      - "#000000"
+      - "#de3e35"
+      - "#3f953a"
+      - "#d2b67c"
+      - "#2f5af3"
+      - "#950095"
+      - "#3f953a"
+      - "#bbbbbb"
+      - "#000000"
+      - "#de3e35"
+      - "#3f953a"
+      - "#d2b67c"
+      - "#2f5af3"
+      - "#a00095"
+      - "#3f953a"
+      - "#ffffff"
 ssh: {}
 configSync:
   parts: {}
@@ -238,4 +238,3 @@ vault:
   contents: USsHvW/LbF9mGK1qEBUH1w==
   keySalt: 4917b224ca0214ba
   iv: a0d23ecd36a1a5b7d8ef8b699b51a18f
-
