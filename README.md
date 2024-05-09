@@ -4,7 +4,7 @@ My dev environment files
 
 TODO:
 
-- [ ] add zsh custom theme and config
+- [x] add zsh custom theme
 - [x] custom my theme
 - [ ] debug ???
-- updating ...
+- [ ] write document to using this dev env files
