@@ -19,13 +19,13 @@ config.colors = {
 	brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
 }
 
-config.font = wezterm.font("MesloLGS Nerd Font")
-config.font_size = 12
+config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular" })
+config.font_size = 11
 
 config.enable_tab_bar = false
 
 config.window_decorations = "RESIZE"
-config.window_background_opacity = 0.95
+config.window_background_opacity = 0.90
 config.macos_window_background_blur = 35
 
 -- and finally, return the configuration to wezterm
