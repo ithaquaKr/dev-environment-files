@@ -1,10 +1,17 @@
-# dev-environment-files
+# Ithadev's environment files
 
-My dev environment files
+!> [!IMPORTANT]
+Don't blindly use my settings unless you know what that entails.
+Use at your own risk!
 
-TODO:
+>
 
-- [x] add zsh custom theme
-- [x] custom my theme
-- [ ] debug ???
-- [ ] write document to using this dev env files
+## Tools i use
+
+## How to use
+
+### Requirements
+
+### MacOS setup
+
+### Ubuntu setup
