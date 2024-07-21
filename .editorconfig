@@ -1,0 +1,9 @@
+[*]
+charset = utf-8
+
+[*.lua]
+max_line_length = 120
+indent_size = 2
+
+[gitconfig]
+indent_style = tab
