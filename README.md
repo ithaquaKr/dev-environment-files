@@ -1,17 +1,18 @@
 # Ithadev's environment files
 
-!> [!IMPORTANT]
-Don't blindly use my settings unless you know what that entails.
-Use at your own risk!
+> [!WARNING]
+> Don't blindly use my settings unless you know what that entails.
+> Use at your own risk!
 
->
+## What i setup for dev environment?
 
-## Tools i use
-
-## How to use
-
-### Requirements
-
-### MacOS setup
-
-### Ubuntu setup
+- [nvim](https://github.com/neovim/neovim)
+- [tmux](https://github.com/tmux/tmux)
+- [mise](https://github.com/jdx/mise)
+- [neofetch](https://github.com/dylanaraps/neofetch)
+- [yabai](https://github.com/koekeishiya/yabai)
+- [skhd](https://github.com/koekeishiya/skhd)
+- [starship](https://github.com/starship/starship)
+- [wezterm](https://github.com/wez/wezterm)
+- [zsh](https://github.com/zsh-users/zsh)
+- [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
