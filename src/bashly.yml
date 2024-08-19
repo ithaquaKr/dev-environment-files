@@ -1,0 +1,72 @@
+name: ithacli
+help: Command Line Interface for using ithadev's environment files.
+version: 0.1.0
+
+# environment_variables:
+#   - name: api_key
+#     help: Set your API key
+
+commands:
+  # TODO: Implement this command
+  - name: setup
+    alias: st
+    help: Install and configure all tools automatically
+
+    flags:
+      - long: --overwrite
+        short: -w
+        help: Overwrite existing configuration.
+      - long: --backup
+        short: -b
+        help: Backup existing configuration.
+      - long: --skip
+        short: -s
+        help: Skip existing configuration.
+
+  - name: list
+    alias: ls
+    help: List of configurations that can be applied.
+
+  - name: apply
+    alias: ap
+    help: Apply configurations.
+
+    args:
+      - name: name
+        required: true
+        help: Name of configuration applied.
+
+    flags:
+      - long: --overwrite
+        short: -w
+        help: Overwrite existing configuration.
+      - long: --backup
+        short: -b
+        help: Backup existing configuration.
+
+    examples:
+      - ithacli apply nvim
+      - ithacli apply zsh --overwrite
+
+    # environment_variables:
+    #   - name: default_target_location
+    #     help: Set the default location to download to
+
+  # - name: upload
+  #   alias: u
+  #   help: Upload a file
+  #   args:
+  #     - name: source
+  #       required: true
+  #       help: File to upload
+  #
+  #   flags:
+  #     - long: --user
+  #       short: -u
+  #       arg: user
+  #       help: Username to use for logging in
+  #       required: true
+  #     - long: --password
+  #       short: -p
+  #       arg: password
+  #       help: Password to use for logging in
