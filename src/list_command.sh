@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # List of folder names to ignore
 ignore_list=("src" "fonts")
