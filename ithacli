@@ -76,7 +76,7 @@ ithacli_apply_usage() {
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithacli apply NAME [OPTIONS]\n"
+  printf "  ithacli apply [NAME] [OPTIONS]\n"
   printf "  ithacli apply --help | -h\n"
   echo
 
@@ -93,6 +93,11 @@ ithacli_apply_usage() {
     # :flag.usage
     printf "  %s\n" "--backup, -b"
     printf "    Backup existing configuration.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--all, -a"
+    printf "    Apply all configurations in list.\n"
     echo
 
     # :command.usage_fixed_flags
@@ -240,18 +245,15 @@ function error() {
 	exit 1
 }
 function log() {
-	if ! [[ ${args[--quiet]} || $ITHACLI_QUIET ]]; then
-		echo >&2 "[$(date +'%Y-%m-%dT%H:%M:%S')] $1"
-		shift
-		for msg in "$@"; do echo >&2 "  $msg"; done
-	fi
+	echo >&2 "[$(date +'%Y-%m-%dT%H:%M:%S')] $1"
+	shift
+	for msg in "$@"; do echo >&2 "  $msg"; done
 }
 
 # :command.command_functions
 # :command.function
 ithacli_list_command() {
   # src/list_command.sh
-  directory="."
   # List of folder names to ignore
   ignore_list=("src" "fonts")
 
@@ -265,17 +267,14 @@ ithacli_list_command() {
   	done
   	return 1
   }
-
   # List configurations
   log "Available configurations"
-  for config in "$directory"/*; do
+  for config in "$(pwd)"/*; do
   	if [[ -d "$config" ]]; then
   		config_name=$(basename "$config")
   		if ! is_ignored "$config_name"; then
   			printf "  - %s\n" "$config_name"
   		fi
-  	# else
-  	# 	error "Configurations directory not found."
   	fi
   done
 
@@ -284,10 +283,10 @@ ithacli_list_command() {
 # :command.function
 ithacli_apply_command() {
   # src/apply_command.sh
-  echo "# this file is located in 'src/remove_command.sh'"
-  echo "# code for 'ithacli remove' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  # Get configuration name
+  config_name=${args[name]}
+
+  echo "config: ${config_name}"
 
 }
 
@@ -472,6 +471,14 @@ ithacli_apply_parse_requirements() {
         shift
         ;;
 
+      # :flag.case
+      --all | -a)
+
+        # :flag.case_no_arg
+        args['--all']=1
+        shift
+        ;;
+
       -?*)
         printf "invalid option: %s\n" "$key" >&2
         exit 1
@@ -493,13 +500,6 @@ ithacli_apply_parse_requirements() {
 
     esac
   done
-
-  # :command.required_args_filter
-  if [[ -z ${args['name']+x} ]]; then
-    printf "missing required argument: NAME\nusage: ithacli apply NAME [OPTIONS]\n" >&2
-
-    exit 1
-  fi
 
 }
 

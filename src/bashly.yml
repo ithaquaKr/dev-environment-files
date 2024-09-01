@@ -13,7 +13,7 @@ commands:
 
     args:
       - name: name
-        required: true
+        required: false
         help: Name of configuration applied.
 
     flags:
@@ -23,6 +23,9 @@ commands:
       - long: --backup
         short: -b
         help: Backup existing configuration.
+      - long: --all
+        short: -a
+        help: Apply all configurations in list.
 
     examples:
       - ithacli apply nvim
