@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+directory="."
 # List of folder names to ignore
 ignore_list=("src" "fonts")
 
@@ -15,12 +14,14 @@ is_ignored() {
 }
 
 # List configurations
-printf "Available configurations:\n"
+log "Available configurations"
 for config in "$directory"/*; do
 	if [[ -d "$config" ]]; then
 		config_name=$(basename "$config")
 		if ! is_ignored "$config_name"; then
 			printf "  - %s\n" "$config_name"
 		fi
+	else
+		error "Configurations directory not found."
 	fi
 done
