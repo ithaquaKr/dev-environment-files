@@ -1,3 +1,4 @@
+# shellcheck shell=bash disable=SC2154
 # List of folder names to ignore
 ignore_list=("src" "fonts")
 
@@ -12,12 +13,12 @@ is_ignored() {
 	return 1
 }
 # List configurations
-log "Available configurations"
+info "Available configurations"
 for config in "$(pwd)"/*; do
 	if [[ -d "$config" ]]; then
 		config_name=$(basename "$config")
 		if ! is_ignored "$config_name"; then
-			printf "  - %s\n" "$config_name"
+			info "- $config_name"
 		fi
 	fi
 done

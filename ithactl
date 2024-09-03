@@ -16,18 +16,19 @@ version_command() {
 }
 
 # :command.usage
-ithacli_usage() {
-  printf "ithacli - Command Line Interface for using ithadev's environment files.\n\n"
+ithactl_usage() {
+  printf "ithactl - Command Line Tools for using ithadev's environment files.\n\n"
 
   printf "%s\n" "Usage:"
-  printf "  ithacli COMMAND\n"
-  printf "  ithacli [COMMAND] --help | -h\n"
-  printf "  ithacli --version | -v\n"
+  printf "  ithactl COMMAND\n"
+  printf "  ithactl [COMMAND] --help | -h\n"
+  printf "  ithactl --version | -v\n"
   echo
   # :command.usage_commands
   printf "%s\n" "Commands:"
   printf "  %s   List of configurations that can be applied.\n" "list  "
   printf "  %s   Apply configurations.\n" "apply "
+  printf "  %s   Apply all configurations.\n" "all   "
   printf "  %s   Remove configurations.\n" "remove"
   echo
 
@@ -47,14 +48,14 @@ ithacli_usage() {
 }
 
 # :command.usage
-ithacli_list_usage() {
-  printf "ithacli list - List of configurations that can be applied.\n\n"
+ithactl_list_usage() {
+  printf "ithactl list - List of configurations that can be applied.\n\n"
   printf "Alias: ls\n"
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithacli list\n"
-  printf "  ithacli list --help | -h\n"
+  printf "  ithactl list\n"
+  printf "  ithactl list --help | -h\n"
   echo
 
   # :command.long_usage
@@ -70,14 +71,14 @@ ithacli_list_usage() {
 }
 
 # :command.usage
-ithacli_apply_usage() {
-  printf "ithacli apply - Apply configurations.\n\n"
+ithactl_apply_usage() {
+  printf "ithactl apply - Apply configurations.\n\n"
   printf "Alias: ap\n"
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithacli apply [NAME] [OPTIONS]\n"
-  printf "  ithacli apply --help | -h\n"
+  printf "  ithactl apply NAME PATH [OPTIONS]\n"
+  printf "  ithactl apply --help | -h\n"
   echo
 
   # :command.long_usage
@@ -87,17 +88,12 @@ ithacli_apply_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--overwrite, -w"
-    printf "    Overwrite existing configuration.\n"
+    printf "    Overwrite existing configurations.\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "--backup, -b"
-    printf "    Backup existing configuration.\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--all, -a"
-    printf "    Apply all configurations in list.\n"
+    printf "    Backup existing configurations.\n"
     echo
 
     # :command.usage_fixed_flags
@@ -113,24 +109,80 @@ ithacli_apply_usage() {
     printf "    Name of configuration applied.\n"
     echo
 
+    # :argument.usage
+    printf "  %s\n" "PATH"
+    printf "    Path of configuration.\n"
+    echo
+
     # :command.usage_examples
     printf "%s\n" "Examples:"
-    printf "  ithacli apply nvim\n"
-    printf "  ithacli apply zsh --overwrite\n"
+    printf "  ithactl apply nvim ~/.config/nvim/\n"
+    printf "  ithactl apply zsh ~/.config/zsh/ --overwrite\n"
     echo
 
   fi
 }
 
 # :command.usage
-ithacli_remove_usage() {
-  printf "ithacli remove - Remove configurations.\n\n"
+ithactl_all_usage() {
+  printf "ithactl all - Apply all configurations.\n\n"
+
+  printf "%s\n" "Usage:"
+  printf "  ithactl all DST [OPTIONS]\n"
+  printf "  ithactl all --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_flags
+    # :flag.usage
+    printf "  %s\n" "--overwrite, -w"
+    printf "    Overwrite existing configurations.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--backup, -b"
+    printf "    Backup existing configurations.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--skip, -s"
+    printf "    Skip existing configurations.\n"
+    echo
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    # :command.usage_args
+    printf "%s\n" "Arguments:"
+
+    # :argument.usage
+    printf "  %s\n" "DST"
+    printf "    Destination to apply configurations.\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  ithactl all nvim\n"
+    printf "  ithactl all zsh --overwrite\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+ithactl_remove_usage() {
+  printf "ithactl remove - Remove configurations.\n\n"
   printf "Alias: rm\n"
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithacli remove SOURCE [OPTIONS]\n"
-  printf "  ithacli remove --help | -h\n"
+  printf "  ithactl remove SOURCE [OPTIONS]\n"
+  printf "  ithactl remove --help | -h\n"
   echo
 
   # :command.long_usage
@@ -237,23 +289,30 @@ inspect_args() {
 }
 
 # :command.user_lib
-# src/lib/logging.sh
-function error() {
-	echo >&2 "[$(date +'%Y-%m-%dT%H:%M:%S')] ERROR: $1"
-	shift
-	for msg in "$@"; do echo >&2 "  $msg"; done
-	exit 1
+# src/lib/print.sh
+info() {
+	printf "\r  [ \033[00;34m..\033[0m ] %s\n" "$1"
 }
-function log() {
-	echo >&2 "[$(date +'%Y-%m-%dT%H:%M:%S')] $1"
-	shift
-	for msg in "$@"; do echo >&2 "  $msg"; done
+
+user() {
+	printf "\r  [ \033[0;33m??\033[0m ] %s\n" "$1"
+}
+
+success() {
+	printf "\r\033[2K  [ \033[00;32mOK\033[0m ] %s\n" "$1"
+}
+
+fail() {
+	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] %s\n" "$1"
+	echo ''
+	exit
 }
 
 # :command.command_functions
 # :command.function
-ithacli_list_command() {
+ithactl_list_command() {
   # src/list_command.sh
+  # shellcheck shell=bash disable=SC2154
   # List of folder names to ignore
   ignore_list=("src" "fonts")
 
@@ -268,12 +327,12 @@ ithacli_list_command() {
   	return 1
   }
   # List configurations
-  log "Available configurations"
+  info "Available configurations"
   for config in "$(pwd)"/*; do
   	if [[ -d "$config" ]]; then
   		config_name=$(basename "$config")
   		if ! is_ignored "$config_name"; then
-  			printf "  - %s\n" "$config_name"
+  			info "- $config_name"
   		fi
   	fi
   done
@@ -281,26 +340,42 @@ ithacli_list_command() {
 }
 
 # :command.function
-ithacli_apply_command() {
+ithactl_apply_command() {
   # src/apply_command.sh
   # shellcheck shell=bash disable=SC2154
   # Get configuration name
   config_name=${args[name]}
+  config_path=${args[path]}
 
   if [[ ${args[--overwrite]} ]]; then
-  	log "Overwrite configuration."
+  	rm -rf "$config_path"
+  	success "Remove path $config_path success"
   fi
 
   if [[ ${args[--backup]} ]]; then
-  	log "Backup configuration."
+  	mv "$config_path" "${config_path}.backup"
+  	info "Backup path $config_path success."
   fi
 
   # TODO: Implement logic to exception when both --overwrite and --backup is defined.
 
+  ln -s "$config_name" "$config_path"
+  success "Apply configuration $config_name success."
+
 }
 
 # :command.function
-ithacli_remove_command() {
+ithactl_all_command() {
+  # src/all_command.sh
+  echo "# this file is located in 'src/all_command.sh'"
+  echo "# code for 'ithactl all' goes here"
+  echo "# you can edit it freely and regenerate (it will not be overwritten)"
+  inspect_args
+
+}
+
+# :command.function
+ithactl_remove_command() {
   # src/remove_command.sh
   echo "# this file is located in 'src/remove_command.sh'"
   echo "# code for 'ithacli remove' goes here"
@@ -321,7 +396,7 @@ parse_requirements() {
 
       --help | -h)
         long_usage=yes
-        ithacli_usage
+        ithactl_usage
         exit
         ;;
 
@@ -341,27 +416,34 @@ parse_requirements() {
     list | ls)
       action="list"
       shift
-      ithacli_list_parse_requirements "$@"
+      ithactl_list_parse_requirements "$@"
       shift $#
       ;;
 
     apply | ap)
       action="apply"
       shift
-      ithacli_apply_parse_requirements "$@"
+      ithactl_apply_parse_requirements "$@"
+      shift $#
+      ;;
+
+    all)
+      action="all"
+      shift
+      ithactl_all_parse_requirements "$@"
       shift $#
       ;;
 
     remove | rm)
       action="remove"
       shift
-      ithacli_remove_parse_requirements "$@"
+      ithactl_remove_parse_requirements "$@"
       shift $#
       ;;
 
     # :command.command_fallback
     "")
-      ithacli_usage >&2
+      ithactl_usage >&2
       exit 1
       ;;
 
@@ -396,13 +478,13 @@ parse_requirements() {
 }
 
 # :command.parse_requirements
-ithacli_list_parse_requirements() {
+ithactl_list_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
       --help | -h)
         long_usage=yes
-        ithacli_list_usage
+        ithactl_list_usage
         exit
         ;;
 
@@ -440,13 +522,13 @@ ithacli_list_parse_requirements() {
 }
 
 # :command.parse_requirements
-ithacli_apply_parse_requirements() {
+ithactl_apply_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
       --help | -h)
         long_usage=yes
-        ithacli_apply_usage
+        ithactl_apply_usage
         exit
         ;;
 
@@ -480,14 +562,6 @@ ithacli_apply_parse_requirements() {
         shift
         ;;
 
-      # :flag.case
-      --all | -a)
-
-        # :flag.case_no_arg
-        args['--all']=1
-        shift
-        ;;
-
       -?*)
         printf "invalid option: %s\n" "$key" >&2
         exit 1
@@ -500,6 +574,10 @@ ithacli_apply_parse_requirements() {
         if [[ -z ${args['name']+x} ]]; then
           args['name']=$1
           shift
+        # :argument.case
+        elif [[ -z ${args['path']+x} ]]; then
+          args['path']=$1
+          shift
         else
           printf "invalid argument: %s\n" "$key" >&2
           exit 1
@@ -510,16 +588,108 @@ ithacli_apply_parse_requirements() {
     esac
   done
 
+  # :command.required_args_filter
+  if [[ -z ${args['name']+x} ]]; then
+    printf "missing required argument: NAME\nusage: ithactl apply NAME PATH [OPTIONS]\n" >&2
+
+    exit 1
+  fi
+  if [[ -z ${args['path']+x} ]]; then
+    printf "missing required argument: PATH\nusage: ithactl apply NAME PATH [OPTIONS]\n" >&2
+
+    exit 1
+  fi
+
 }
 
 # :command.parse_requirements
-ithacli_remove_parse_requirements() {
+ithactl_all_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
       --help | -h)
         long_usage=yes
-        ithacli_remove_usage
+        ithactl_all_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="all"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      # :flag.case
+      --overwrite | -w)
+
+        # :flag.case_no_arg
+        args['--overwrite']=1
+        shift
+        ;;
+
+      # :flag.case
+      --backup | -b)
+
+        # :flag.case_no_arg
+        args['--backup']=1
+        shift
+        ;;
+
+      # :flag.case
+      --skip | -s)
+
+        # :flag.case_no_arg
+        args['--skip']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        # :argument.case
+        if [[ -z ${args['dst']+x} ]]; then
+          args['dst']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
+
+    esac
+  done
+
+  # :command.required_args_filter
+  if [[ -z ${args['dst']+x} ]]; then
+    printf "missing required argument: DST\nusage: ithactl all DST [OPTIONS]\n" >&2
+
+    exit 1
+  fi
+
+}
+
+# :command.parse_requirements
+ithactl_remove_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        ithactl_remove_usage
         exit
         ;;
 
@@ -589,7 +759,7 @@ ithacli_remove_parse_requirements() {
 
   # :command.required_args_filter
   if [[ -z ${args['source']+x} ]]; then
-    printf "missing required argument: SOURCE\nusage: ithacli remove SOURCE [OPTIONS]\n" >&2
+    printf "missing required argument: SOURCE\nusage: ithactl remove SOURCE [OPTIONS]\n" >&2
 
     exit 1
   fi
@@ -621,9 +791,10 @@ run() {
   parse_requirements "${input[@]}"
 
   case "$action" in
-    "list") ithacli_list_command ;;
-    "apply") ithacli_apply_command ;;
-    "remove") ithacli_remove_command ;;
+    "list") ithactl_list_command ;;
+    "apply") ithactl_apply_command ;;
+    "all") ithactl_all_command ;;
+    "remove") ithactl_remove_command ;;
   esac
 }
 
