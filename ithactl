@@ -77,7 +77,7 @@ ithactl_apply_usage() {
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithactl apply NAME PATH [OPTIONS]\n"
+  printf "  ithactl apply NAME [OPTIONS]\n"
   printf "  ithactl apply --help | -h\n"
   echo
 
@@ -88,12 +88,17 @@ ithactl_apply_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--overwrite, -w"
-    printf "    Overwrite existing configurations.\n"
+    printf "    Overwrite existing configuration.\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "--backup, -b"
-    printf "    Backup existing configurations.\n"
+    printf "    Backup existing configuration.\n"
+    echo
+
+    # :flag.usage
+    printf "  %s\n" "--path, -p"
+    printf "    Path to apply configuration.\n"
     echo
 
     # :command.usage_fixed_flags
@@ -107,11 +112,6 @@ ithactl_apply_usage() {
     # :argument.usage
     printf "  %s\n" "NAME"
     printf "    Name of configuration applied.\n"
-    echo
-
-    # :argument.usage
-    printf "  %s\n" "PATH"
-    printf "    Path of configuration.\n"
     echo
 
     # :command.usage_examples
@@ -181,7 +181,7 @@ ithactl_remove_usage() {
   echo
 
   printf "%s\n" "Usage:"
-  printf "  ithactl remove SOURCE [OPTIONS]\n"
+  printf "  ithactl remove\n"
   printf "  ithactl remove --help | -h\n"
   echo
 
@@ -189,28 +189,9 @@ ithactl_remove_usage() {
   if [[ -n $long_usage ]]; then
     printf "%s\n" "Options:"
 
-    # :command.usage_flags
-    # :flag.usage
-    printf "  %s\n" "--user, -u USER (required)"
-    printf "    Username to use for logging in\n"
-    echo
-
-    # :flag.usage
-    printf "  %s\n" "--password, -p PASSWORD"
-    printf "    Password to use for logging in\n"
-    echo
-
     # :command.usage_fixed_flags
     printf "  %s\n" "--help, -h"
     printf "    Show this help\n"
-    echo
-
-    # :command.usage_args
-    printf "%s\n" "Arguments:"
-
-    # :argument.usage
-    printf "  %s\n" "SOURCE"
-    printf "    File to upload\n"
     echo
 
   fi
@@ -289,13 +270,43 @@ inspect_args() {
 }
 
 # :command.user_lib
+# src/lib/constant.sh
+# shellcheck shell=bash disable=SC2034
+# List available configuration
+configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh")
+
+# Define source path
+src_path_jgit="jgit/config"
+src_path_mise="mise/config.toml"
+src_path_neofetch="neofetch/config.conf"
+src_path_nvim="nvim"
+src_path_skhd="skhd/skhdrc"
+src_path_starship="starship/starship.toml"
+src_path_tmux="tmux/tmux.conf"
+src_path_wezterm="wezterm/wezterm.lua"
+src_path_yabai="yabai/yabairc"
+src_path_zsh="zsh/zshrc"
+
+# Define default path
+default_dst_path_jgit="${HOME}/.config/jgit/config"
+#default_dst_path_mise="${HOME}/.config/mise/config.toml"
+default_dst_path_mise="${HOME}/test/mise/config.toml"
+default_dst_path_neofetch="${HOME}/.config/neofetch/config.conf"
+default_dst_path_nvim="${HOME}/.config/nvim"
+default_dst_path_skhd="${HOME}/.config/skhd/skhdrc"
+default_dst_path_starship="${HOME}/.config/starship/starship.toml"
+default_dst_path_tmux="${HOME}/.tmux.conf"
+default_dst_path_wezterm="${HOME}/.wezterm.lua"
+default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
+default_dst_path_zsh="${HOME}/.zshrc"
+
 # src/lib/print.sh
 info() {
 	printf "\r  [ \033[00;34m..\033[0m ] %s\n" "$1"
 }
 
-user() {
-	printf "\r  [ \033[0;33m??\033[0m ] %s\n" "$1"
+process() {
+	printf "\r  [ \033[0;33m>>\033[0m ] %s\n" "$1"
 }
 
 success() {
@@ -304,8 +315,50 @@ success() {
 
 fail() {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] %s\n" "$1"
-	echo ''
 	exit
+}
+
+# src/lib/utils.sh
+# shellcheck shell=bash disable=SC2154
+check_config_available() {
+	# The configuration to check
+	config_check=$1
+
+	# Flag to track if the config is found
+	found=false
+
+	# Loop through the array to check if the config is in the array
+	for config in "${configurations[@]}"; do
+		if [[ "$config" == "$config_check" ]]; then
+			found=true
+			break
+		fi
+	done
+
+	# If the config is not found, perform the action
+	if [[ "$found" == false ]]; then
+		fail "Error: Configuration $config_check not found"
+	fi
+}
+
+get_default_dst_config_path() {
+	config=$1
+	default_conf_path=default_dst_path_$config
+	echo "${!default_conf_path}"
+}
+
+get_source_config_path() {
+	config=$1
+	source_conf_path=src_path_$config
+	echo "${PWD}/${!source_conf_path}"
+}
+
+ensure_dst_config_path_exist() {
+	local full_path="$1"
+	local dir_path
+	dir_path=$(dirname "$full_path")
+	mkdir "$dir_path"
+	info "Configuration path $dir_path has been created"
 }
 
 # :command.command_functions
@@ -313,27 +366,12 @@ fail() {
 ithactl_list_command() {
   # src/list_command.sh
   # shellcheck shell=bash disable=SC2154
-  # List of folder names to ignore
-  ignore_list=("src" "fonts")
 
-  # Function to check if a folder name is in the ignore list
-  is_ignored() {
-  	local folder_name="$1"
-  	for ignore_folder in "${ignore_list[@]}"; do
-  		if [[ "$folder_name" == "$ignore_folder" ]]; then
-  			return 0
-  		fi
-  	done
-  	return 1
-  }
   # List configurations
   info "Available configurations"
-  for config in "$(pwd)"/*; do
+  for config in "${configurations[@]}"; do
   	if [[ -d "$config" ]]; then
-  		config_name=$(basename "$config")
-  		if ! is_ignored "$config_name"; then
-  			info "- $config_name"
-  		fi
+  		info "- $config"
   	fi
   done
 
@@ -344,22 +382,44 @@ ithactl_apply_command() {
   # src/apply_command.sh
   # shellcheck shell=bash disable=SC2154
   # Get configuration name
+  # TODO: Implement to check args short
   config_name=${args[name]}
-  config_path=${args[path]}
 
-  if [[ ${args[--overwrite]} ]]; then
-  	rm -rf "$config_path"
-  	success "Remove path $config_path success"
+  # Check if --path args not set, use default config dst
+  if [[ ${args[--path]} ]]; then
+  	config_dst=${args[--path]}
+  else
+  	config_dst=$(get_default_dst_config_path "$config_name")
+  fi
+  config_src=$(get_source_config_path "$config_name")
+  flag_overwrite=${args[--overwrite]}
+  flag_backup=${args[--backup]}
+
+  # Check if configuration input is available
+  check_config_available "$config_name"
+
+  # Check if both flags are set, and exit with an error if they are
+  if [[ $flag_backup && $flag_overwrite ]]; then
+  	fail "Error: Both --backup and --overwrite flags cannot be used together."
+  	exit 1
   fi
 
-  if [[ ${args[--backup]} ]]; then
-  	mv "$config_path" "${config_path}.backup"
-  	info "Backup path $config_path success."
+  # Check if the path exists and is a file, directory, or symlink
+  if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
+  	if [[ $flag_overwrite ]]; then
+  		rm -rf "$config_dst"
+  		process "Successfully removed: $config_dst"
+  	elif [[ $flag_backup ]]; then
+  		mv "$config_dst" "${config_dst}.backup"
+  		process "Successfully backed up: $config_dst to ${config_dst}.backup"
+  	else
+  		fail "Error: Configuration already exists: $config_dst"
+  	fi
+  else
+  	ensure_dst_config_path_exist "$config_dst"
   fi
 
-  # TODO: Implement logic to exception when both --overwrite and --backup is defined.
-
-  ln -s "$config_name" "$config_path"
+  ln -s "$config_src" "$config_dst"
   success "Apply configuration $config_name success."
 
 }
@@ -562,6 +622,14 @@ ithactl_apply_parse_requirements() {
         shift
         ;;
 
+      # :flag.case
+      --path | -p)
+
+        # :flag.case_no_arg
+        args['--path']=1
+        shift
+        ;;
+
       -?*)
         printf "invalid option: %s\n" "$key" >&2
         exit 1
@@ -573,10 +641,6 @@ ithactl_apply_parse_requirements() {
         # :argument.case
         if [[ -z ${args['name']+x} ]]; then
           args['name']=$1
-          shift
-        # :argument.case
-        elif [[ -z ${args['path']+x} ]]; then
-          args['path']=$1
           shift
         else
           printf "invalid argument: %s\n" "$key" >&2
@@ -590,12 +654,7 @@ ithactl_apply_parse_requirements() {
 
   # :command.required_args_filter
   if [[ -z ${args['name']+x} ]]; then
-    printf "missing required argument: NAME\nusage: ithactl apply NAME PATH [OPTIONS]\n" >&2
-
-    exit 1
-  fi
-  if [[ -z ${args['path']+x} ]]; then
-    printf "missing required argument: PATH\nusage: ithactl apply NAME PATH [OPTIONS]\n" >&2
+    printf "missing required argument: NAME\nusage: ithactl apply NAME [OPTIONS]\n" >&2
 
     exit 1
   fi
@@ -707,33 +766,6 @@ ithactl_remove_parse_requirements() {
   while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
-      # :flag.case
-      --user | -u)
-
-        # :flag.case_arg
-        if [[ -n ${2+x} ]]; then
-          args['--user']="$2"
-          shift
-          shift
-        else
-          printf "%s\n" "--user requires an argument: --user, -u USER" >&2
-          exit 1
-        fi
-        ;;
-
-      # :flag.case
-      --password | -p)
-
-        # :flag.case_arg
-        if [[ -n ${2+x} ]]; then
-          args['--password']="$2"
-          shift
-          shift
-        else
-          printf "%s\n" "--password requires an argument: --password, -p PASSWORD" >&2
-          exit 1
-        fi
-        ;;
 
       -?*)
         printf "invalid option: %s\n" "$key" >&2
@@ -743,32 +775,13 @@ ithactl_remove_parse_requirements() {
       *)
         # :command.parse_requirements_case
         # :command.parse_requirements_case_simple
-        # :argument.case
-        if [[ -z ${args['source']+x} ]]; then
-          args['source']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
 
         ;;
 
     esac
   done
-
-  # :command.required_args_filter
-  if [[ -z ${args['source']+x} ]]; then
-    printf "missing required argument: SOURCE\nusage: ithactl remove SOURCE [OPTIONS]\n" >&2
-
-    exit 1
-  fi
-
-  # :command.required_flags_filter
-  if [[ -z ${args['--user']+x} ]]; then
-    printf "missing required flag: --user, -u USER\n" >&2
-    exit 1
-  fi
 
 }
 

@@ -15,17 +15,17 @@ commands:
       - name: name
         required: true
         help: Name of configuration applied.
-      - name: path
-        required: true
-        help: Path of configuration.
 
     flags:
       - long: --overwrite
         short: -w
-        help: Overwrite existing configurations.
+        help: Overwrite existing configuration.
       - long: --backup
         short: -b
-        help: Backup existing configurations.
+        help: Backup existing configuration.
+      - long: --path
+        short: -p
+        help: Path to apply configuration.
 
     examples:
       - ithactl apply nvim ~/.config/nvim/
