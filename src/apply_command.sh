@@ -8,6 +8,7 @@ if [[ ${args[--path]} ]]; then
 	config_dst=${args[--path]}
 else
 	config_dst=$(get_default_dst_config_path "$config_name")
+	ensure_dst_config_path_exist "$config_dst"
 fi
 config_src=$(get_source_config_path "$config_name")
 flag_overwrite=${args[--overwrite]}
@@ -33,8 +34,6 @@ if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
 	else
 		fail "Error: Configuration already exists: $config_dst"
 	fi
-else
-	ensure_dst_config_path_exist "$config_dst"
 fi
 
 ln -s "$config_src" "$config_dst"
