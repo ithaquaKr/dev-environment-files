@@ -36,7 +36,6 @@ ensure_dst_config_path_exist() {
 	local full_path="$1"
 	local dir_path
 	dir_path=$(dirname "$full_path")
-	info "$dir_path"
 	mkdir -p "$dir_path"
 	info "Configuration path $dir_path has been created"
 }

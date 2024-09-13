@@ -31,13 +31,14 @@ commands:
       - ithactl apply nvim ~/.config/nvim/
       - ithactl apply zsh ~/.config/zsh/ --overwrite
 
+  # TODO: This command will apply all configuration in default path.
+  # Implement this to load path overwrite from env or configues files.
   - name: all
     help: Apply all configurations.
-
-    args:
-      - name: dst
-        required: true
-        help: Destination to apply configurations.
+    # args:
+    #   - name: dst
+    #     required: true
+    #     help: Destination to apply configurations.
     flags:
       - long: --overwrite
         short: -w
@@ -56,3 +57,13 @@ commands:
   - name: remove
     alias: rm
     help: Remove configurations.
+
+    args:
+      - name: name
+        required: false
+        help: Name of configuration applied.
+
+    flags:
+      - long: --force
+        short: -f
+        help: Force remove configuration
