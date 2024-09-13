@@ -4,12 +4,13 @@
 config_name=${args[name]}
 
 # Check if --path args not set, use default config dst
-if [[ ${args[--path]} ]]; then
-	config_dst=${args[--path]}
-else
+if [[ -z "${args[--path]}" ]]; then
 	config_dst=$(get_default_dst_config_path "$config_name")
 	ensure_dst_config_path_exist "$config_dst"
+else
+	config_dst="${args[--path]}"
 fi
+
 config_src=$(get_source_config_path "$config_name")
 flag_overwrite=${args[--overwrite]}
 flag_backup=${args[--backup]}
@@ -24,7 +25,7 @@ if [[ $flag_backup && $flag_overwrite ]]; then
 fi
 
 # Check if the path exists and is a file, directory, or symlink
-if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
+if [[ -e "$config_dst" ]]; then
 	if [[ $flag_overwrite ]]; then
 		rm -rf "$config_dst"
 		process "Successfully removed: $config_dst"
@@ -33,8 +34,11 @@ if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
 		process "Successfully backed up: $config_dst to ${config_dst}.backup"
 	else
 		fail "Error: Configuration already exists: $config_dst"
+		exit 1
 	fi
 fi
 
 ln -s "$config_src" "$config_dst"
+
+process "Successfully linked: $config_src to $config_dst"
 success "Apply configuration $config_name success."

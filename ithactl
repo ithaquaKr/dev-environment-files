@@ -294,26 +294,16 @@ src_path_yabai="configs/yabai/yabairc"
 src_path_zsh="configs/zsh/zshrc"
 
 # Define default path
-default_dst_path_jgit="${HOME}/test/.config/jgit/config"
-default_dst_path_mise="${HOME}/test/.config/mise/config.toml"
-default_dst_path_neofetch="${HOME}/test/.config/neofetch/config.conf"
-default_dst_path_nvim="${HOME}/test/.config/nvim/*"
-default_dst_path_skhd="${HOME}/test/.config/skhd/skhdrc"
-default_dst_path_starship="${HOME}/test/.config/starship/starship.toml"
-default_dst_path_tmux="${HOME}/test/.tmux.conf"
-default_dst_path_wezterm="${HOME}/test/.wezterm.lua"
-default_dst_path_yabai="${HOME}/test/.config/yabai/yabairc"
-default_dst_path_zsh="${HOME}/test/.zshrc"
-# default_dst_path_jgit="${HOME}/.config/jgit/config"
-# default_dst_path_mise="${HOME}/.config/mise/config.toml"
-# default_dst_path_neofetch="${HOME}/.config/neofetch/config.conf"
-# default_dst_path_nvim="${HOME}/.config/nvim"
-# default_dst_path_skhd="${HOME}/.config/skhd/skhdrc"
-# default_dst_path_starship="${HOME}/.config/starship/starship.toml"
-# default_dst_path_tmux="${HOME}/.tmux.conf"
-# default_dst_path_wezterm="${HOME}/.wezterm.lua"
-# default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
-# default_dst_path_zsh="${HOME}/.zshrc"
+default_dst_path_jgit="${HOME}/.config/jgit/config"
+default_dst_path_mise="${HOME}/.config/mise/config.toml"
+default_dst_path_neofetch="${HOME}/.config/neofetch/config.conf"
+default_dst_path_nvim="${HOME}/.config/nvim"
+default_dst_path_skhd="${HOME}/.config/skhd/skhdrc"
+default_dst_path_starship="${HOME}/.config/starship/starship.toml"
+default_dst_path_tmux="${HOME}/.tmux.conf"
+default_dst_path_wezterm="${HOME}/.wezterm.lua"
+default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
+default_dst_path_zsh="${HOME}/.zshrc"
 
 # src/lib/print.sh
 info() {
@@ -409,11 +399,11 @@ ithactl_apply_command() {
   config_name=${args[name]}
 
   # Check if --path args not set, use default config dst
-  if [[ ${args[--path]} ]]; then
-  	config_dst=${args[--path]}
-  else
+  if [[ -z "${args[--path]}" ]]; then
   	config_dst=$(get_default_dst_config_path "$config_name")
   	ensure_dst_config_path_exist "$config_dst"
+  else
+  	config_dst="${args[--path]}"
   fi
 
   config_src=$(get_source_config_path "$config_name")
@@ -430,7 +420,7 @@ ithactl_apply_command() {
   fi
 
   # Check if the path exists and is a file, directory, or symlink
-  if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
+  if [[ -e "$config_dst" ]]; then
   	if [[ $flag_overwrite ]]; then
   		rm -rf "$config_dst"
   		process "Successfully removed: $config_dst"
@@ -444,6 +434,7 @@ ithactl_apply_command() {
   fi
 
   ln -s "$config_src" "$config_dst"
+
   process "Successfully linked: $config_src to $config_dst"
   success "Apply configuration $config_name success."
 
