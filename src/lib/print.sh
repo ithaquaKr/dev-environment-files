@@ -15,6 +15,10 @@ fail() {
 	exit
 }
 
+fail_not_exit() {
+	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] %s\n" "$1"
+}
+
 user() {
 	printf "\r  [ \033[0;33m??\033[0m ] %s\n" "$1"
 }

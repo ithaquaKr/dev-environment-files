@@ -139,17 +139,17 @@ ithactl_all_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--overwrite, -w"
-    printf "    Overwrite existing configurations.\n"
+    printf "    Overwrite all existing configurations.\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "--backup, -b"
-    printf "    Backup existing configurations.\n"
+    printf "    Backup all existing configurations.\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "--skip, -s"
-    printf "    Skip existing configurations.\n"
+    printf "    Skip all existing configurations.\n"
     echo
 
     # :command.usage_fixed_flags
@@ -159,8 +159,8 @@ ithactl_all_usage() {
 
     # :command.usage_examples
     printf "%s\n" "Examples:"
-    printf "  ithactl all nvim\n"
-    printf "  ithactl all zsh --overwrite\n"
+    printf "  ithactl all\n"
+    printf "  ithactl all --overwrite\n"
     echo
 
   fi
@@ -183,8 +183,8 @@ ithactl_remove_usage() {
 
     # :command.usage_flags
     # :flag.usage
-    printf "  %s\n" "--force, -f"
-    printf "    Force remove configuration\n"
+    printf "  %s\n" "--approve"
+    printf "    Auto approve to remove the configuration.\n"
     echo
 
     # :command.usage_fixed_flags
@@ -197,7 +197,7 @@ ithactl_remove_usage() {
 
     # :argument.usage
     printf "  %s\n" "NAME"
-    printf "    Name of configuration applied.\n"
+    printf "    Name of configuration applied. If not define, all the configuration has\n    applied will be removed.\n"
     echo
 
   fi
@@ -282,29 +282,18 @@ inspect_args() {
 configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh")
 
 # Define source path
-src_path_jgit="jgit/config"
-src_path_mise="mise/config.toml"
-src_path_neofetch="neofetch/config.conf"
-src_path_nvim="nvim/*"
-src_path_skhd="skhd/skhdrc"
-src_path_starship="starship/starship.toml"
-src_path_tmux="tmux/tmux.conf"
-src_path_wezterm="wezterm/wezterm.lua"
-src_path_yabai="yabai/yabairc"
-src_path_zsh="zsh/zshrc"
+src_path_jgit="configs/jgit/config"
+src_path_mise="configs/mise/config.toml"
+src_path_neofetch="configs/neofetch/config.conf"
+src_path_nvim="configs/nvim/*"
+src_path_skhd="configs/skhd/skhdrc"
+src_path_starship="configs/starship/starship.toml"
+src_path_tmux="configs/tmux/tmux.conf"
+src_path_wezterm="configs/wezterm/wezterm.lua"
+src_path_yabai="configs/yabai/yabairc"
+src_path_zsh="configs/zsh/zshrc"
 
 # Define default path
-# default_dst_path_jgit="${HOME}/.config/jgit/config"
-# default_dst_path_mise="${HOME}/.config/mise/config.toml"
-# default_dst_path_neofetch="${HOME}/.config/neofetch/config.conf"
-# default_dst_path_nvim="${HOME}/.config/nvim"
-# default_dst_path_skhd="${HOME}/.config/skhd/skhdrc"
-# default_dst_path_starship="${HOME}/.config/starship/starship.toml"
-# default_dst_path_tmux="${HOME}/.tmux.conf"
-# default_dst_path_wezterm="${HOME}/.wezterm.lua"
-# default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
-# default_dst_path_zsh="${HOME}/.zshrc"
-#
 default_dst_path_jgit="${HOME}/test/.config/jgit/config"
 default_dst_path_mise="${HOME}/test/.config/mise/config.toml"
 default_dst_path_neofetch="${HOME}/test/.config/neofetch/config.conf"
@@ -315,6 +304,16 @@ default_dst_path_tmux="${HOME}/test/.tmux.conf"
 default_dst_path_wezterm="${HOME}/test/.wezterm.lua"
 default_dst_path_yabai="${HOME}/test/.config/yabai/yabairc"
 default_dst_path_zsh="${HOME}/test/.zshrc"
+# default_dst_path_jgit="${HOME}/.config/jgit/config"
+# default_dst_path_mise="${HOME}/.config/mise/config.toml"
+# default_dst_path_neofetch="${HOME}/.config/neofetch/config.conf"
+# default_dst_path_nvim="${HOME}/.config/nvim"
+# default_dst_path_skhd="${HOME}/.config/skhd/skhdrc"
+# default_dst_path_starship="${HOME}/.config/starship/starship.toml"
+# default_dst_path_tmux="${HOME}/.tmux.conf"
+# default_dst_path_wezterm="${HOME}/.wezterm.lua"
+# default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
+# default_dst_path_zsh="${HOME}/.zshrc"
 
 # src/lib/print.sh
 info() {
@@ -332,6 +331,10 @@ success() {
 fail() {
 	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] %s\n" "$1"
 	exit
+}
+
+fail_not_exit() {
+	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] %s\n" "$1"
 }
 
 user() {
@@ -412,6 +415,7 @@ ithactl_apply_command() {
   	config_dst=$(get_default_dst_config_path "$config_name")
   	ensure_dst_config_path_exist "$config_dst"
   fi
+
   config_src=$(get_source_config_path "$config_name")
   flag_overwrite=${args[--overwrite]}
   flag_backup=${args[--backup]}
@@ -435,10 +439,12 @@ ithactl_apply_command() {
   		process "Successfully backed up: $config_dst to ${config_dst}.backup"
   	else
   		fail "Error: Configuration already exists: $config_dst"
+  		exit 1
   	fi
   fi
 
   ln -s "$config_src" "$config_dst"
+  process "Successfully linked: $config_src to $config_dst"
   success "Apply configuration $config_name success."
 
 }
@@ -552,10 +558,103 @@ ithactl_all_command() {
 # :command.function
 ithactl_remove_command() {
   # src/remove_command.sh
-  echo "# this file is located in 'src/remove_command.sh'"
-  echo "# code for 'ithacli remove' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  # shellcheck shell=bash disable=SC2154
+
+  # Get flag
+  auto_approve=${args[--approve]}
+
+  # Get config name
+  config=${args[name]}
+
+  remove_all=
+  action=
+
+  if [[ -z "$config" ]]; then
+  	info "You didn't specify the config name to remove. All the configuration that has been applied will be removed."
+  	user "Do you want to remove all? [y]es, [n]o?"
+  	read -r -n 1 action </dev/tty
+  	case "$action" in
+  	y)
+  		remove_all=true
+  		;;
+  	n)
+  		info "Action has been canceled."
+  		exit 1
+  		;;
+  	*)
+  		fail "ERROR: Invalid option, skipping."
+  		exit 1
+  		;;
+  	esac
+  fi
+
+  default_config_src=$(get_source_config_path "$config")
+
+  if [[ "$remove_all" ]]; then
+  	if [[ ! "$auto_approve" ]]; then
+  		user "Confirm to remove all configurations? [y]es, [n]o?"
+  		read -r -n 1 action </dev/tty
+  		case "$action" in
+  		y) ;;
+  		n)
+  			info "Action has been cancel"
+  			exit 1
+  			;;
+  		*)
+  			fail "ERROR: Invalid option, skipping."
+  			exit 1
+  			;;
+  		esac
+  	fi
+  	for config in "${configurations[@]}"; do
+  		config_dst=$(get_default_dst_config_path "$config")
+
+  		if [[ -f "$config_dst" || -d "$config_dst" || -L "$config_dst" ]]; then
+  			rm -r "$config_dst"
+  			process "Remove config $config successfully."
+  		else
+  			fail_not_exit "Error: Config $config not found."
+  		fi
+  	done
+  	success "All configuration has been remove successfully."
+  else
+  	config_dst=$(get_default_dst_config_path "$config")
+  	current_src="$(readlink "$config_dst" 2>/dev/null || true)" # Allow readlink failure
+  	if [[ ! "$current_src" == "$default_config_src" ]]; then
+  		info "Your config is not pointing to the config source"
+  		user "Still want to remove? [y]es, [n]o?"
+  		read -r -n 1 action </dev/tty
+  		case "$action" in
+  		y) ;;
+  		n)
+  			info "Action has been cancel"
+  			exit 1
+  			;;
+  		*)
+  			fail "ERROR: Invalid option, skipping."
+  			exit 1
+  			;;
+  		esac
+  	fi
+
+  	if [[ -z "$auto_approve" ]]; then
+  		user "Confirm to remove $config? [y]es, [n]o?"
+  		read -r -n 1 action </dev/tty
+  		case "$action" in
+  		y) ;;
+  		n)
+  			info "Action has been canceled."
+  			exit 1
+  			;;
+  		*)
+  			fail "ERROR: Invalid option, skipping."
+  			exit 1
+  			;;
+  		esac
+  	fi
+  	rm -r "$config_dst"
+  	success "Remove config $config successfully."
+  fi
 
 }
 
@@ -869,10 +968,10 @@ ithactl_remove_parse_requirements() {
     key="$1"
     case "$key" in
       # :flag.case
-      --force | -f)
+      --approve)
 
         # :flag.case_no_arg
-        args['--force']=1
+        args['--approve']=1
         shift
         ;;
 

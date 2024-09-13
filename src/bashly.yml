@@ -57,9 +57,8 @@ commands:
     args:
       - name: name
         required: false
-        help: Name of configuration applied.
+        help: Name of configuration applied. If not define, all the configuration has applied will be removed.
 
     flags:
-      - long: --force
-        short: -f
-        help: Force remove configuration
+      - long: --approve
+        help: Auto approve to remove the configuration.
