@@ -35,24 +35,20 @@ commands:
   # Implement this to load path overwrite from env or configues files.
   - name: all
     help: Apply all configurations.
-    # args:
-    #   - name: dst
-    #     required: true
-    #     help: Destination to apply configurations.
     flags:
       - long: --overwrite
         short: -w
-        help: Overwrite existing configurations.
+        help: Overwrite all existing configurations.
       - long: --backup
         short: -b
-        help: Backup existing configurations.
+        help: Backup all existing configurations.
       - long: --skip
         short: -s
-        help: Skip existing configurations.
+        help: Skip all existing configurations.
 
     examples:
-      - ithactl all nvim
-      - ithactl all zsh --overwrite
+      - ithactl all
+      - ithactl all --overwrite
 
   - name: remove
     alias: rm
