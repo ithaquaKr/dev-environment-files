@@ -3,16 +3,16 @@
 configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh")
 
 # Define source path
-src_path_jgit="jgit/config"
-src_path_mise="mise/config.toml"
-src_path_neofetch="neofetch/config.conf"
-src_path_nvim="nvim/*"
-src_path_skhd="skhd/skhdrc"
-src_path_starship="starship/starship.toml"
-src_path_tmux="tmux/tmux.conf"
-src_path_wezterm="wezterm/wezterm.lua"
-src_path_yabai="yabai/yabairc"
-src_path_zsh="zsh/zshrc"
+src_path_jgit="configs/jgit/config"
+src_path_mise="configs/mise/config.toml"
+src_path_neofetch="configs/neofetch/config.conf"
+src_path_nvim="configs/nvim/*"
+src_path_skhd="configs/skhd/skhdrc"
+src_path_starship="configs/starship/starship.toml"
+src_path_tmux="configs/tmux/tmux.conf"
+src_path_wezterm="configs/wezterm/wezterm.lua"
+src_path_yabai="configs/yabai/yabairc"
+src_path_zsh="configs/zsh/zshrc"
 
 # Define default path
 default_dst_path_jgit="${HOME}/.config/jgit/config"
