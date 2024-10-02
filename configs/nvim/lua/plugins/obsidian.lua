@@ -20,7 +20,6 @@ return {
   opts = {
     workspaces = {
       {
-        -- Change this path for each environment
         name = "knowhow",
         path = "/Users/ithaqua/Library/Mobile Documents/com~apple~CloudDocs/knowhow",
       },
