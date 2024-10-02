@@ -279,7 +279,7 @@ inspect_args() {
 # src/lib/constant.sh
 # shellcheck shell=bash disable=SC2034
 # List available configuration
-configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh" "k9s" "btop" "fabric")
+configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh" "k9s" "btop" "fabric" "ton")
 
 # Define source path
 src_path_jgit="configs/jgit/config"
@@ -295,6 +295,7 @@ src_path_zsh="configs/zsh/zshrc"
 src_path_btop="configs/btop"
 src_path_k9s="configs/k9s"
 src_path_fabric="configs/fabric"
+src_path_ton="configs/to-obsidian-note/config.yml"
 
 # Define default path
 default_dst_path_jgit="${HOME}/.config/jgit/config"
@@ -307,9 +308,10 @@ default_dst_path_tmux="${HOME}/.tmux.conf"
 default_dst_path_wezterm="${HOME}/.wezterm.lua"
 default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
 default_dst_path_zsh="${HOME}/.zshrc"
-default_dst_path_btop="${HOME}/.configs/btop"
+default_dst_path_btop="${HOME}/.config/btop"
 default_dst_path_k9s="${HOME}/.config/k9s"
 default_dst_path_fabric="${HOME}/.config/fabric"
+default_dst_path_ton="${HOME}/.config/to-obsidian-note/config.yml"
 
 # src/lib/print.sh
 info() {
@@ -386,13 +388,47 @@ ithactl_list_command() {
   # src/list_command.sh
   # shellcheck shell=bash disable=SC2154
 
+  # Function to print a line separator
+  print_line() {
+  	printf "  +----------------+------------+\n"
+  }
+
+  # Function to print the table header
+  print_header() {
+  	printf "  | %-14s | %-10s |\n" "Config" "Status"
+  }
+
+  # Function to print table rows
+  print_row() {
+  	printf "  | %-14s | %-10s |\n" "$1" "$2"
+  }
+
+  check_config_active() {
+  	config_dst=$1
+  	config_src=$2
+  	current_src="$(readlink "$config_dst" 2>/dev/null || true)" # Allow readlink failure
+
+  	# If the symlink is already pointing to the correct source, it mean configurations is enabled
+  	if [[ "$current_src" == "$config_src" ]]; then
+  		printf "\e[32m%-10s\e[0m" "Enabled"
+  	else
+  		printf "\e[31m%-10s\e[0m" "Disabled"
+  	fi
+  }
+
   # List configurations
   info "Available configurations"
+  print_line
+  print_header
+  print_line
   for config in "${configurations[@]}"; do
-  	if [[ -d "$config" ]]; then
-  		info "- $config"
-  	fi
+  	# TODO: Update this ??
+  	default_config_dst=$(get_default_dst_config_path "$config")
+  	default_config_src=$(get_source_config_path "$config")
+
+  	print_row "$config" "$(check_config_active "$default_config_dst" "$default_config_src")"
   done
+  print_line
 
 }
 

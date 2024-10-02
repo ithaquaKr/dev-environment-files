@@ -1,6 +1,6 @@
 # shellcheck shell=bash disable=SC2034
 # List available configuration
-configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh" "k9s" "btop" "fabric")
+configurations=("jgit" "mise" "neofetch" "nvim" "skhd" "starship" "tmux" "wezterm" "yabai" "zsh" "k9s" "btop" "fabric" "ton")
 
 # Define source path
 src_path_jgit="configs/jgit/config"
@@ -16,6 +16,7 @@ src_path_zsh="configs/zsh/zshrc"
 src_path_btop="configs/btop"
 src_path_k9s="configs/k9s"
 src_path_fabric="configs/fabric"
+src_path_ton="configs/to-obsidian-note/config.yml"
 
 # Define default path
 default_dst_path_jgit="${HOME}/.config/jgit/config"
@@ -28,6 +29,7 @@ default_dst_path_tmux="${HOME}/.tmux.conf"
 default_dst_path_wezterm="${HOME}/.wezterm.lua"
 default_dst_path_yabai="${HOME}/.config/yabai/yabairc"
 default_dst_path_zsh="${HOME}/.zshrc"
-default_dst_path_btop="${HOME}/.configs/btop"
+default_dst_path_btop="${HOME}/.config/btop"
 default_dst_path_k9s="${HOME}/.config/k9s"
 default_dst_path_fabric="${HOME}/.config/fabric"
+default_dst_path_ton="${HOME}/.config/to-obsidian-note/config.yml"

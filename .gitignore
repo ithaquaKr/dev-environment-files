@@ -11,3 +11,5 @@ lazy-lock.json
 zshrc.local
 
 Brewfile.lock.json
+
+*.env
