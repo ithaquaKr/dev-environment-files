@@ -1,21 +1,24 @@
 # Ithadev's environment files
 
-This repository stores the dotfiles and configuration files for my development environments. It also includes a command-line tool built using [`bashly`](https://github.com/DannyBen/bashly), a framework for generating Bash command-line tools. The tool provides a streamlined way to manage and apply these configurations.
+This repository stores the dotfiles and configuration files for my development
+environments. It also includes a command-line tool built using
+[`bashly`](https://github.com/DannyBen/bashly), a framework for generating Bash
+command-line tools. The tool provides a streamlined way to manage and apply
+these configurations.
 
 > [!WARNING]
 > Don't blindly use my settings unless you know what that entails.
 > Use at your own risk!
 
-## Feature
+## Preview
 
-The CLI tool in this repository offers the following features:
+- ![preview-1](./assets/preview-1.png)
 
-- **List Available Configs**: List all configurations stored in the repository.
-- **Apply All Configs**: Apply all available configurations in one go.
-- **Apply Individual Configs**: Apply configurations for a single tool or service.
-- **Remove Configs**: Remove applied configurations from your environment.
+- ![preview-2](./assets/preview-2.png)
 
-## What i setup for dev environment?
+- ![preview-3](./assets/preview-3.png)
+
+## What i setup for my dev environment?
 
 This repository includes configuration files for the following tools:
 
@@ -23,30 +26,59 @@ This repository includes configuration files for the following tools:
 - [tmux](https://github.com/tmux/tmux)
 - [mise](https://github.com/jdx/mise)
 - [neofetch](https://github.com/dylanaraps/neofetch)
-- [yabai](https://github.com/koekeishiya/yabai)
-- [skhd](https://github.com/koekeishiya/skhd)
+- [yabai](https://github.com/koekeishiya/yabai) - Deprecated
+- [skhd](https://github.com/koekeishiya/skhd) - Deprecated
 - [starship](https://github.com/starship/starship)
 - [wezterm](https://github.com/wez/wezterm)
-- [zsh](https://github.com/zsh-users/zsh)
-- [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
-- [btop](https://github.com/aristocratos/btop?tab=readme-ov-file#installation)
-- [fabric](https://github.com/danielmiessler/fabric/tree/main?tab=readme-ov-file#helper-apps)
+- [zsh](https://github.com/zsh-users/zsh) + [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
+- [btop](https://github.com/aristocratos/btop)
+- [fabric](https://github.com/danielmiessler/fabric/tree/main)
 - [k9s](https://github.com/derailed/k9s)
-- [aerospace]
+- [aerospace](https://github.com/nikitabobko/AeroSpace)
+- [to-obsidian-note](https://github.com/ithaquaKr/to-obsidian-note)
 
-## Usage
+## Setup
 
-### Dependencies
+### Requirements
 
-> TBD
+- All dependencies those tools needed.
 
 ### Using CLI
 
-> TBD
+My repository support a bash script CLI tool offers the following features:
+
+- **List Available Configs**: List all configurations stored in the repository.
+- **Apply All Configs**: Apply all available configurations in one go.
+- **Apply Individual Configs**: Apply configurations for a single tool or service.
+- **Remove Configs**: Remove applied configurations from your environment.
+
+```sh
+❯ ./ithactl --help
+ithactl - Command Line Tools for using ithadev's environment files.
+
+Usage:
+  ithactl COMMAND
+  ithactl [COMMAND] --help | -h
+  ithactl --version | -v
+
+Commands:
+  list     List of configurations that can be applied.
+  apply    Apply configurations.
+  all      Apply all configurations.
+  remove   Remove configurations.
+
+Options:
+  --help, -h
+    Show this help
+
+  --version, -v
+    Show version number
+```
 
 ## Contributing
 
-Feel free to fork this repository and submit pull requests if you have improvements or new configurations that could enhance this setup.
+Feel free to fork this repository and submit pull requests if you have
+improvements or new configurations that could enhance this setup.
 
 ### Reporting issues
 
