@@ -32,6 +32,7 @@ This repository includes configuration files for the following tools:
 - [btop](https://github.com/aristocratos/btop?tab=readme-ov-file#installation)
 - [fabric](https://github.com/danielmiessler/fabric/tree/main?tab=readme-ov-file#helper-apps)
 - [k9s](https://github.com/derailed/k9s)
+- [aerospace]
 
 ## Usage
 
