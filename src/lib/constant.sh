@@ -1,6 +1,7 @@
 # shellcheck shell=bash disable=SC2034
 # List available configuration
-configurations=("jgit" "mise" "neofetch" "nvim" "starship" "tmux" "wezterm" "zsh" "k9s" "btop" "fabric" "ton" "aerospace")
+configurations=("jgit" "mise" "neofetch" "nvim" "starship" "tmux" "wezterm"
+	"zsh" "k9s" "btop" "fabric" "ton" "aerospace" "i3" "picom")
 
 # Define source path
 src_path_jgit="configs/jgit/config"
@@ -16,6 +17,8 @@ src_path_k9s="configs/k9s"
 src_path_fabric="configs/fabric"
 src_path_ton="configs/to-obsidian-note/config.yml"
 src_path_aerospace="configs/aerospace/aerospace.toml"
+src_path_i3="configs/i3"
+src_path_picom="configs/picom/picom.conf"
 
 # Define default path
 default_dst_path_jgit="${HOME}/.config/jgit/config"
@@ -31,3 +34,5 @@ default_dst_path_k9s="${HOME}/.config/k9s"
 default_dst_path_fabric="${HOME}/.config/fabric"
 default_dst_path_ton="${HOME}/.config/to-obsidian-note/config.yml"
 default_dst_path_aerospace="${HOME}/.config/aerospace/aerospace.toml"
+default_dst_path_i3="${HOME}/.config/i3"
+default_dst_path_picom="${HOME}/.config/picom/picom.conf"
