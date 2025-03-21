@@ -78,7 +78,7 @@ ZSH_THEME="steeef"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search)
+plugins=(git web-search gh pass)
 
 # Add zsh completion
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
@@ -198,3 +198,14 @@ for pattern_file in ~/.config/fabric/patterns/*; do
     }
     "
 done
+
+# Wrap SSH to automatically set current tmux window title to the hostname that you’ve sshed on.
+function ssh() {
+    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
+        tmux rename-window "$(echo $* | cut -d . -f 1)"
+        command ssh "$@"
+        tmux set-window-option automatic-rename "on" 1>/dev/null
+    else
+        command ssh "$@"
+    fi
+}
