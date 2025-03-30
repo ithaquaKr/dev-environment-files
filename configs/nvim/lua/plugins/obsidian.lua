@@ -1,6 +1,6 @@
 return {
-  -- "ithaquaKr/obsidian.nvim",
-  dir = "/Users/ithaqua/work/fork/obsidian.nvim",
+  "ithaquaKr/obsidian.nvim",
+  -- dir = "/Users/ithaqua/work/fork/obsidian.nvim",
   name = "obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
@@ -53,8 +53,9 @@ return {
       if note.title and note.title ~= "Action items" then
         note:add_alias(note.title)
       end
+      local updated = os.date()
 
-      local out = { id = note.id, aliases = note.aliases }
+      local out = { id = note.id, aliases = note.aliases, updated = updated }
 
       -- `note.metadata` contains any manually added fields in the frontmatter.
       -- So here we just make sure those fields are kept in the frontmatter.
@@ -95,6 +96,30 @@ return {
         -- Insert a tag at the current location.
         insert_tag = "<C-l>",
       },
+    },
+    attachments = {
+      -- The default folder to place images in via `:ObsidianPasteImg`.
+      -- If this is a relative path it will be interpreted as relative to the vault root.
+      -- You can always override this per image by passing a full path to the command instead of just a filename.
+      img_folder = "3. RESOURCE/attachments/", -- This is the default
+
+      -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
+      ---@return string
+      img_name_func = function()
+        -- Prefix image names with timestamp.
+        return string.format("%s-", os.time())
+      end,
+
+      -- A function that determines the text to insert in the note when pasting an image.
+      -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
+      -- This is the default implementation.
+      ---@param client obsidian.Client
+      ---@param path obsidian.Path the absolute path to the image file
+      ---@return string
+      img_text_func = function(client, path)
+        path = client:vault_relative_path(path) or path
+        return string.format("![%s](%s)", path.name, path)
+      end,
     },
   },
 }
