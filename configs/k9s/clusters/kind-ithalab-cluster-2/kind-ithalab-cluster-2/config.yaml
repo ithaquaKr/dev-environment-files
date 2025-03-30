@@ -1,11 +1,10 @@
 k9s:
-  cluster: kind-ithacluster
+  cluster: kind-ithalab-cluster-2
   namespace:
-    active: all
+    active: default
     lockFavorites: false
     favorites:
-    - all
-    - default
+      - default
   view:
     active: pod
   featureGates:

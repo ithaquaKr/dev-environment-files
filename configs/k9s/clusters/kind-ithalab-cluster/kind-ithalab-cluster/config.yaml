@@ -1,13 +1,13 @@
 k9s:
-  cluster: kind-ithacluster
+  cluster: kind-ithalab-cluster
   namespace:
     active: all
     lockFavorites: false
     favorites:
-    - all
-    - default
+      - all
+      - default
   view:
-    active: pod
+    active: po
   featureGates:
     nodeShell: false
   proxy: null
