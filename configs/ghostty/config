@@ -1,4 +1,3 @@
-
 font-size = 12
 background-blur-radius = 30
 mouse-hide-while-typing = true
@@ -10,8 +9,14 @@ cursor-style = block
 shell-integration-features = no-cursor
 shell-integration = zsh
 macos-window-shadow = false
-macos-titlebar-style = hidden
+macos-titlebar-style = hidden 
+window-save-state = always
+copy-on-select = clipboard
+window-padding-x = 8
+window-padding-y = 8,2
+quit-after-last-window-closed = true
 
+# Theme
 palette = 0=#15161e
 palette = 1=#f7768e
 palette = 2=#9ece6a
