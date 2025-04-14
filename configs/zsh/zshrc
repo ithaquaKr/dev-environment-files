@@ -149,6 +149,7 @@ if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Use
 if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 autoload -U +X bashcompinit && bashcompinit
+autoload -U compinit && compinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
