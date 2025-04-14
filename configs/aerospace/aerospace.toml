@@ -209,3 +209,15 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.vng.zalo'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+run = 'layout floating'
