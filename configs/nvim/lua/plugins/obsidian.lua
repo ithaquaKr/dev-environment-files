@@ -45,7 +45,7 @@ return {
       end
       return tostring(os.time()) .. "-" .. suffix
     end,
-    wiki_link_func = "use_alias_only",
+    wiki_link_func = "prepend_note_id",
     -- disable_frontmatter = true,
     ---@return table
     note_frontmatter_func = function(note)
