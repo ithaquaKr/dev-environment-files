@@ -1,5 +1,5 @@
 return {
-  "ithaquaKr/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   -- dir = "/Users/ithaqua/work/fork/obsidian.nvim",
   name = "obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
