@@ -12,11 +12,11 @@ these configurations.
 
 ## Preview
 
-- ![preview-1](./assets/preview-1.png)
+- ![ss_1](./assets/ss_1.png)
 
-- ![preview-2](./assets/preview-2.png)
+- ![ss_2](./assets/ss_2.png)
 
-- ![preview-3](./assets/preview-3.png)
+- ![ss_3](./assets/ss_3.png)
 
 ## What i setup for my dev environment?
 
@@ -30,6 +30,7 @@ This repository includes configuration files for the following tools:
 - [skhd](https://github.com/koekeishiya/skhd) - Deprecated
 - [starship](https://github.com/starship/starship)
 - [wezterm](https://github.com/wez/wezterm)
+- [ghostty](https://github.com/ghostty-org/ghostty)
 - [zsh](https://github.com/zsh-users/zsh) + [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
 - [btop](https://github.com/aristocratos/btop)
 - [fabric](https://github.com/danielmiessler/fabric/tree/main)
