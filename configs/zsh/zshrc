@@ -119,6 +119,7 @@ alias fb=fabric
 alias ton=to-obsidian-note
 alias cat=bat
 alias kx=kubectx
+alias hf=helmfile
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -200,14 +201,3 @@ for pattern_file in ~/.config/fabric/patterns/*; do
     }
     "
 done
-
-# Wrap SSH to automatically set current tmux window title to the hostname that you’ve sshed on.
-function ssh() {
-    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-        tmux rename-window "$(echo $* | cut -d . -f 1)"
-        command ssh "$@"
-        tmux set-window-option automatic-rename "on" 1>/dev/null
-    else
-        command ssh "$@"
-    fi
-}
