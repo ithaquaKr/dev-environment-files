@@ -153,6 +153,7 @@ if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then .
 autoload -U +X bashcompinit && bashcompinit
 autoload -U compinit && compinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
+source $(brew --prefix)/etc/bash_completion.d/az # Azure CLI
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 # Zoxide ( maybe better than cd)
