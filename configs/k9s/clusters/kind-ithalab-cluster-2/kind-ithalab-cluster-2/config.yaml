@@ -1,9 +1,11 @@
 k9s:
   cluster: kind-ithalab-cluster-2
   namespace:
-    active: default
+    active: all
     lockFavorites: false
     favorites:
+      - all
+      - goldpinger
       - default
   view:
     active: pod

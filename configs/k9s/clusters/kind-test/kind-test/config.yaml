@@ -1,15 +1,13 @@
 k9s:
-  cluster: kind-kind
+  cluster: kind-test
   namespace:
     active: all
     lockFavorites: false
     favorites:
       - all
       - default
-      - victoria
-      - versus
   view:
-    active: namespace
+    active: context
   featureGates:
     nodeShell: false
   proxy: null

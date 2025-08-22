@@ -1,13 +1,12 @@
 k9s:
-  cluster: kind-kind
+  cluster: kind-kind-cluster
   namespace:
-    active: all
+    active: monitoring
     lockFavorites: false
     favorites:
+      - monitoring
       - all
       - default
-      - victoria
-      - versus
   view:
     active: namespace
   featureGates:
