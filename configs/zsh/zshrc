@@ -120,6 +120,8 @@ alias ton=to-obsidian-note
 alias cat=bat
 alias kx=kubectx
 alias hf=helmfile
+alias ld=lazydocker
+alias cd=z
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -202,3 +204,13 @@ for pattern_file in ~/.config/fabric/patterns/*; do
     }
     "
 done
+
+
+function startbasework() {
+  echo "Start Base work session."
+
+}
+
+function endbasework() {
+  echo "End Basw work session."
+}
