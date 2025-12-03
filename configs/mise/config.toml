@@ -1,6 +1,6 @@
 [tools]
 node = "20.13.1"
-go = "1.23.1"
+go = "1.25.4"
 python = "3.13.2"
 
 [settings]

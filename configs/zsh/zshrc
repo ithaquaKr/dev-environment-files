@@ -214,3 +214,8 @@ function startbasework() {
 function endbasework() {
   echo "End Basw work session."
 }
+
+# Fix tmux xterm
+# export TERM=xterm
+
+source "$(gcloud info --format='value(installation.sdk_root)')/completion.zsh.inc"
