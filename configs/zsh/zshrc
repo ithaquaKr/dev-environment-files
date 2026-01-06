@@ -219,3 +219,11 @@ function endbasework() {
 # export TERM=xterm
 
 source "$(gcloud info --format='value(installation.sdk_root)')/completion.zsh.inc"
+
+# pnpm
+export PNPM_HOME="/Users/ithaqua/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
