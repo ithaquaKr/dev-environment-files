@@ -121,7 +121,6 @@ alias cat=bat
 alias kx=kubectx
 alias hf=helmfile
 alias ld=lazydocker
-alias cd=z
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -254,3 +253,16 @@ export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.1/sbin:$PATH"
 
 export HELM_SECRETS_VALS_PATH="/usr/local/bin/vals"
+
+
+# Auto generate commit message based on the current changed
+function commit() {
+  commitMessage="$*"
+
+  if [ "$commitMessage" = "" ]; then
+    diff_input=$(git diff --cached | head -c 50000) # Get the diff, truncated
+    commitMessage=$(echo "$diff_input" | claude -p "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown.")
+  fi
+
+  git commit -m "$commitMessage"
+}
