@@ -1,7 +1,8 @@
 [tools]
 node = "25.1.0"
-go = "1.25.4"
+go = "latest"
 python = "3.13.2"
+rust = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
