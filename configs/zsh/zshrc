@@ -277,15 +277,23 @@ function ssh() {
 # Rename tmux window to instance name on gcloud compute ssh
 function gcloud() {
   if [[ -n "$TMUX" && "$1" == "compute" && "$2" == "ssh" ]]; then
-    local instance
+    local instance skip_next=0
+    # flags that consume the next argument as their value
+    local -a value_flags=(--zone --project --ssh-flag --ssh-key-file
+                          --container --strict-host-key-checking --tunnel-through-iap)
     for arg in "${@:3}"; do
-      [[ "$arg" != -* ]] && { instance="$arg"; break; }
+      if (( skip_next )); then
+        skip_next=0; continue
+      fi
+      [[ "$arg" == --*=* ]] && continue          # --flag=value, no positional
+      [[ " ${value_flags[*]} " == *" $arg "* ]] && { skip_next=1; continue; }
+      [[ "$arg" == -* ]] && continue             # boolean flag
+      instance="$arg"; break                     # first bare word = instance
     done
     instance="${instance##*@}"  # strip user@ prefix
-    tmux rename-window "$instance"
-    tmux set-window-option automatic-rename off
+    [[ -n "$instance" ]] && tmux rename-window "$instance" && tmux set-window-option automatic-rename off
     command gcloud "$@"
-    tmux set-window-option automatic-rename on
+    [[ -n "$instance" ]] && tmux set-window-option automatic-rename on
   else
     command gcloud "$@"
   fi
