@@ -251,7 +251,7 @@ function commit() {
 
   if [ "$commitMessage" = "" ]; then
     diff_input=$(git diff --cached | head -c 50000) # Get the diff, truncated
-    commitMessage=$(echo "$diff_input" | claude -p "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown.")
+    commitMessage=$(echo "$diff_input" | (cd /tmp && claude -p --no-session-persistence "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown."))
   fi
 
   git commit -m "$commitMessage"
@@ -298,3 +298,4 @@ function gcloud() {
     command gcloud "$@"
   fi
 }
+eval "$(tv init zsh)"

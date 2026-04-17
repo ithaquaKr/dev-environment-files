@@ -11,6 +11,7 @@ return {
           ["<C-k>"] = false,
           ["<C-j>"] = false,
           ["<M-h>"] = "actions.select_split",
+          ["<C-r>"] = "actions.refresh",
         },
         view_options = { show_hidden = true },
       })
