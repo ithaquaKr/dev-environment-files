@@ -258,6 +258,19 @@ function commit() {
   git commit -m "$commitMessage"
 }
 
+# Auto generate commit message using opencode
+function commitoc() {
+  commitMessage="$*"
+
+  if [ "$commitMessage" = "" ]; then
+    diff_input=$(git diff --cached | head -c 50000)
+    commitMessage=$(echo "$diff_input" | (cd /tmp && opencode run "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown."))
+  fi
+
+  echo "Commit message: $commitMessage"
+  git commit -m "$commitMessage"
+}
+
 # Rename tmux window to remote hostname on SSH, restore auto-rename on exit
 function ssh() {
   if [[ -n "$TMUX" ]]; then
@@ -300,3 +313,6 @@ function gcloud() {
   fi
 }
 eval "$(tv init zsh)"
+
+# opencode
+export PATH=/Users/ithaqua/.opencode/bin:$PATH
