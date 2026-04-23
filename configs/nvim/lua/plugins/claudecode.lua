@@ -22,13 +22,15 @@ return {
 
     -- Multi-session management
     { "<leader>an", "<cmd>ClaudeCodeSessionNew<cr>", desc = "New Claude session" },
+    { "<leader>aN", "<cmd>ClaudeCodeSessionFor<cr>", desc = "New Claude session for profile" },
     { "<leader>a<Tab>", "<cmd>ClaudeCodeSessionSwitch<cr>", desc = "Switch Claude session" },
     { "<leader>ak", "<cmd>ClaudeCodeSessionKill<cr>", desc = "Kill active Claude session" },
+    { "<leader>ap", "<cmd>ClaudeCodeProfile<cr>", desc = "Switch default Claude profile" },
 
     -- Development helpers
     -- { "<leader>ao", "<cmd>ClaudeCodeOpen<cr>", desc = "Open Claude" },
     -- { "<leader>aq", "<cmd>ClaudeCodeClose<cr>", desc = "Close Claude" },
-    -- { "<leader>ai", "<cmd>ClaudeCodeStatus<cr>", desc = "Claude Status" },
+    { "<leader>ai", "<cmd>ClaudeCodeStatus<cr>", desc = "Claude Status" },
     -- { "<leader>aS", "<cmd>ClaudeCodeStart<cr>", desc = "Start Claude Server" },
     -- { "<leader>aQ", "<cmd>ClaudeCodeStop<cr>", desc = "Stop Claude Server" },
 
@@ -74,6 +76,13 @@ return {
     --   auto_close = true,                        -- Auto-close terminal after command completion
     --   snacks_win_opts = {},                     -- Opts to pass to `Snacks.terminal.open()`
     -- },
+
+    -- Profile Configuration (multi-account / API key support)
+    profiles = {
+      work = { claude_config_dir = "~/.claude-work", account_email = "hiep.nguyen03@base.vn" },
+      personal = { claude_config_dir = "~/.claude", account_email = "ithadev.nguyen@gmail.com" },
+    },
+    default_profile = "personal",
 
     -- Development overrides (uncomment as needed)
     -- log_level = "debug",

@@ -111,6 +111,7 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim=nvim
+alias claudework='CLAUDE_CONFIG_DIR=~/.claude-work claude'
 alias lg=lazygit
 alias k=kubectl
 alias tf=terraform
