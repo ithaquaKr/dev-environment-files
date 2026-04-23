@@ -264,7 +264,7 @@ function commitoc() {
 
   if [ "$commitMessage" = "" ]; then
     diff_input=$(git diff --cached | head -c 50000)
-    commitMessage=$(echo "$diff_input" | (cd /tmp && opencode run "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown."))
+    commitMessage=$(echo "$diff_input" | (cd /tmp && opencode run --format json "Write a single-line conventional commit message for this diff. Output ONLY the message, no quotes, no explanation, no markdown." 2>/dev/null | jq -r 'select(.type == "text") | .part.text') | grep -v '^$' | head -1)
   fi
 
   echo "Commit message: $commitMessage"
