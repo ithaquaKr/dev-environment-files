@@ -271,6 +271,17 @@ function commitoc() {
   git commit -m "$commitMessage"
 }
 
+# Run netshoot debug container in Kubernetes; pass extra flags like -n <namespace>
+# Uses NET_RAW capability for traceroute/tcpdump on GKE Autopilot
+function kdebug() {
+  kubectl run netshoot-debug \
+    --rm -it \
+    --image=nicolaka/netshoot \
+    --restart=Never \
+    --overrides='{"spec":{"containers":[{"name":"netshoot-debug","image":"nicolaka/netshoot","stdin":true,"tty":true,"command":["/bin/bash"],"securityContext":{"capabilities":{"add":["NET_RAW"]}}}]}}' \
+    "$@"
+}
+
 # Rename tmux window to remote hostname on SSH, restore auto-rename on exit
 function ssh() {
   if [[ -n "$TMUX" ]]; then
