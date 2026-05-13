@@ -325,5 +325,12 @@ function gcloud() {
 }
 eval "$(tv init zsh)"
 
+
+# Recursively bring down all docker-compose.yml / compose.yml in a directory
+function dcd() {
+  local dir="${1:-.}"
+  find "$dir" \( -name "docker-compose.yml" -o -name "compose.yml" \) -exec docker compose -f {} down \;
+}
+
 # opencode
 export PATH=/Users/ithaqua/.opencode/bin:$PATH
