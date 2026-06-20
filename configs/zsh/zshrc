@@ -78,7 +78,7 @@ ZSH_THEME="steeef"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search gh pass docker helm)
+plugins=(git web-search gh pass docker helm gcloud)
 
 # Add zsh completion
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
@@ -147,10 +147,20 @@ eval "$(mise activate zsh)"
 source <(kubectl completion zsh)
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ithaqua/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
+# if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ithaqua/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/ithaqua/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ithaqua/google-cloud-sdk/path.zsh.inc'; fi
+#
 # The next line enables shell command completion for gcloud.
+# # if [ -f '/Users/ithaqua/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ithaqua/google-cloud-sdk/completion.zsh.inc'; fi
 if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+if [ -f '/Users/ithaqua/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then 
+  _gcloud_completion() {
+    source "$HOME/Downloads/google-cloud-sdk/completion.zsh.inc"
+  }
+  compdef _gcloud_completion gcloud
+fi
+
 
 autoload -U +X bashcompinit && bashcompinit
 autoload -U compinit && compinit
@@ -208,7 +218,7 @@ export K9S_CONFIG_DIR=~/.config/k9s/
 # Fix tmux xterm
 # export TERM=xterm
 
-source "$(gcloud info --format='value(installation.sdk_root)')/completion.zsh.inc"
+# (gcloud completion is already sourced above via completion.zsh.inc)
 
 # pnpm
 export PNPM_HOME="/Users/ithaqua/Library/pnpm"
@@ -334,3 +344,4 @@ function dcd() {
 
 # opencode
 export PATH=/Users/ithaqua/.opencode/bin:$PATH
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"

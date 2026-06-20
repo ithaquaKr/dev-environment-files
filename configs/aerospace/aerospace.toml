@@ -221,3 +221,11 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.Preview'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Calendar'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Reminders'
+run = 'layout floating'
