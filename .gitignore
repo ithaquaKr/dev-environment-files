@@ -1,6 +1,7 @@
 nvim/autoload
 nvim/plugged
 nvim/session
+configs/k9s/clusters/**
 
 navi/cheats/.*
 navi/*.log
