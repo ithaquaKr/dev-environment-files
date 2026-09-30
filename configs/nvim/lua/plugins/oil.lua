@@ -4,7 +4,7 @@ return {
     dependencies = { { "nvim-mini/mini.icons", opts = {} } },
     config = function()
       require("oil").setup({
-        columns = { "icon" },
+        columns = { "icon", "permissions", "size", "mtime" },
         keymaps = {
           ["<C-h>"] = false,
           ["<C-l>"] = false,
@@ -14,6 +14,8 @@ return {
           ["<C-r>"] = "actions.refresh",
         },
         view_options = { show_hidden = true },
+        -- Set to true to watch the filesystem for changes and reload oil
+        watch_for_changes = false,
       })
 
       -- Open parent directory in current window
