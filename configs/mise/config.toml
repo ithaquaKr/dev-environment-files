@@ -3,6 +3,7 @@ node = "25.1.0"
 go = "latest"
 python = "3.13.2"
 rust = "latest"
+hunk = "latest"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python"]
