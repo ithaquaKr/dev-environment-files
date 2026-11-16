@@ -1,0 +1,110 @@
+# Silver Point Accent: grey neutrals of Rex's Silver Point Dark + Claude Code
+# accents (see ~/.config/nvim/lua/plugins/teide.lua). Keeps the terminal
+# background (bgColor: default), like the old transparent skin.
+foreground: &foreground "#b4b4b4"
+dim: &dim "#898989"
+comment: &comment "#666666"
+bright: &bright "#f4f4f4"
+border: &border "#333333"
+surface: &surface "#232323"
+lavender: &lavender "#b1b9f9"
+purple: &purple "#af87ff"
+green: &green "#4eba65"
+orange: &orange "#d77757"
+yellow: &yellow "#ffc107"
+red: &red "#ff6b80"
+teal: &teal "#6cb6ad"
+dark: &dark "#131313"
+
+k9s:
+  body:
+    fgColor: *foreground
+    bgColor: default
+    logoColor: *orange
+  prompt:
+    fgColor: *foreground
+    bgColor: default
+    suggestColor: *comment
+  help:
+    fgColor: *foreground
+    bgColor: default
+    sectionColor: *lavender
+    keyColor: *orange
+    numKeyColor: *purple
+  info:
+    fgColor: *orange
+    sectionColor: *foreground
+  dialog:
+    fgColor: *foreground
+    bgColor: default
+    buttonFgColor: *dark
+    buttonBgColor: *dim
+    buttonFocusFgColor: *dark
+    buttonFocusBgColor: *lavender
+    labelFgColor: *orange
+    fieldFgColor: *foreground
+  frame:
+    border:
+      fgColor: *border
+      focusColor: *lavender
+    menu:
+      fgColor: *foreground
+      keyColor: *orange
+      numKeyColor: *purple
+    crumbs:
+      fgColor: *dark
+      bgColor: *dim
+      activeColor: *lavender
+    status:
+      newColor: *teal
+      modifyColor: *lavender
+      addColor: *green
+      pendingColor: *yellow
+      errorColor: *red
+      highlightColor: *orange
+      killColor: *purple
+      completedColor: *comment
+    title:
+      fgColor: *foreground
+      bgColor: default
+      highlightColor: *orange
+      counterColor: *lavender
+      filterColor: *purple
+  views:
+    charts:
+      bgColor: default
+      defaultDialColors:
+        - *lavender
+        - *red
+      defaultChartColors:
+        - *lavender
+        - *red
+    table:
+      fgColor: *foreground
+      bgColor: default
+      cursorFgColor: *bright
+      cursorBgColor: *surface
+      markColor: *purple
+      header:
+        fgColor: *dim
+        bgColor: default
+        sorterColor: *orange
+    xray:
+      fgColor: *foreground
+      bgColor: default
+      cursorColor: *surface
+      cursorTextColor: *bright
+      graphicColor: *lavender
+      showIcons: false
+    yaml:
+      keyColor: *lavender
+      colonColor: *comment
+      valueColor: *foreground
+    logs:
+      fgColor: *foreground
+      bgColor: default
+      indicator:
+        fgColor: *foreground
+        bgColor: default
+        toggleOnColor: *green
+        toggleOffColor: *comment

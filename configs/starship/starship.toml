@@ -3,12 +3,16 @@
 
 # Inserts a blank line between shell prompts
 add_newline = true
+# Palette "Silver Point Accent" (see ~/.config/nvim/lua/plugins/teide.lua).
+# Rex's Silver Point Dark maps every ANSI color to grey, so this palette
+# overrides the color names that starship modules use with hex values.
+palette = "silver_accent"
 command_timeout = 200
 # format = "[$directory$git_branch$git_status]($style)$character"
 
 [character]
-error_symbol = "[✗](bold cyan)"
-success_symbol = "[❯](bold cyan)"
+error_symbol = "[✗](bold red)"
+success_symbol = "[❯](bold orange)"
 
 [directory]
 truncation_length = 2
@@ -19,7 +23,7 @@ read_only = " 󰌾"
 
 [git_branch]
 format = "[$branch]($style) "
-style = "italic cyan"
+style = "italic purple"
 # symbol = " "
 
 [git_status]
@@ -174,3 +178,24 @@ symbol = " "
 
 [scala]
 symbol = " "
+
+[palettes.silver_accent]
+black = "#1a1a1a"
+red = "#ff6b80"
+green = "#4eba65"
+yellow = "#ffc107"
+blue = "#b1b9f9"
+purple = "#af87ff"
+magenta = "#af87ff"
+cyan = "#b1b9f9"
+white = "#b4b4b4"
+orange = "#d77757"
+teal = "#6cb6ad"
+bright-black = "#666666"
+bright-red = "#ff8a9b"
+bright-green = "#6fd185"
+bright-yellow = "#ffd54f"
+bright-blue = "#cdd2ff"
+bright-purple = "#c6a8ff"
+bright-cyan = "#8fd0c8"
+bright-white = "#f4f4f4"

@@ -25,7 +25,7 @@ k9s:
     # Toggles icons display as not all terminal support these chars.
     noIcons: false
     # By default all contexts wil use the dracula skin unless explicitly overridden in the context config file.
-    skin: transparent # => assumes the file skins/dracula.yaml is present in the  $XDG_DATA_HOME/k9s/skins directory
+    skin: silver-accent # ~/.config/k9s/skins/silver-accent.yaml (old: transparent)
   # Toggles whether k9s should check for the latest revision from the Github repository releases. Default is false.
   skipLatestRevCheck: false
   # Disable count pods while in node view. Default is false.
