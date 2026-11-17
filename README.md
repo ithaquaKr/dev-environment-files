@@ -1,86 +1,106 @@
 # Ithadev's environment files
 
-This repository stores the dotfiles and configuration files for my development
-environments. A small bash script, `ithactl`, symlinks them into place based on
-the manifest `links.conf`.
+My dotfiles for macOS (with a few Linux extras), kept as plain files under
+`configs/` and symlinked into place by one small script, `ithactl`.
+Everything shares a single colour palette, **Silver Point Accent**: Rex's
+neutral greys plus a periwinkle accent (`#b1b9f9`).
 
 > [!WARNING]
-> Don't blindly use my settings unless you know what that entails.
-> Use at your own risk!
+> These are my personal settings. Read them before you apply them, and use at
+> your own risk.
 
 ## Preview
 
-- ![ss_1](./assets/ss_1.png)
+![tmux with neofetch, lazydocker and btop](./assets/ss_3.png)
 
-- ![ss_2](./assets/ss_2.png)
+|                                       |                                                   |
+| ------------------------------------- | ------------------------------------------------- |
+| ![nvim in ghostty](./assets/ss_2.png) | ![starship prompt and ithactl](./assets/ss_1.png) |
 
-- ![ss_3](./assets/ss_3.png)
+> [!NOTE]
+> These screenshots are from June 2025 and predate the Silver Point Accent
+> palette and the `links.conf` version of `ithactl`.
 
-## What i setup for my dev environment?
+## What's inside
 
-This repository includes configuration files for the following tools:
+| Area        | Tools                                                                                                                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Terminal    | [ghostty](https://github.com/ghostty-org/ghostty) · [wezterm](https://github.com/wez/wezterm) · [rex](https://www.superlogical.com/rex) · [tmux](https://github.com/tmux/tmux)                                           |
+| Shell       | [zsh](https://github.com/zsh-users/zsh) + [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) · [starship](https://github.com/starship/starship) · [television](https://github.com/alexpasmantier/television)                |
+| Editor      | [nvim](https://github.com/neovim/neovim) (LazyVim, with claudecode)                                                                                                                                                      |
+| Git         | `gitconfig` with [hunk](https://github.com/modem-dev/hunk) pager and [delta](https://github.com/dandavison/delta) · [gh-dash](https://github.com/dlvhdr/gh-dash) · jgit                                                  |
+| CLI         | [bat](https://github.com/sharkdp/bat) · [yazi](https://github.com/sxyazi/yazi) · [btop](https://github.com/aristocratos/btop) · [neofetch](https://github.com/dylanaraps/neofetch) · [mise](https://github.com/jdx/mise) |
+| Kubernetes  | [k9s](https://github.com/derailed/k9s)                                                                                                                                                                                   |
+| AI / notes  | [fabric](https://github.com/danielmiessler/fabric) · [ccstatusline](https://github.com/sirmalloc/ccstatusline) · [to-obsidian-note](https://github.com/ithaquaKr/to-obsidian-note)                                       |
+| Window mgmt | [aerospace](https://github.com/nikitabobko/AeroSpace) (macOS) · i3 and picom (Linux)                                                                                                                                     |
 
-- [nvim](https://github.com/neovim/neovim)
-- [tmux](https://github.com/tmux/tmux)
-- [mise](https://github.com/jdx/mise)
-- [neofetch](https://github.com/dylanaraps/neofetch)
-- [yabai](https://github.com/koekeishiya/yabai) - Deprecated
-- [skhd](https://github.com/koekeishiya/skhd) - Deprecated
-- [starship](https://github.com/starship/starship)
-- [wezterm](https://github.com/wez/wezterm)
-- [ghostty](https://github.com/ghostty-org/ghostty)
-- [hunk](https://github.com/modem-dev/hunk)
-- [rex](https://www.superlogical.com/rex)
-- [bat](https://github.com/sharkdp/bat) + git ([delta](https://github.com/dandavison/delta) / hunk pager)
-- [ccstatusline](https://github.com/sirmalloc/ccstatusline)
-- [gh-dash](https://github.com/dlvhdr/gh-dash)
-- [television](https://github.com/alexpasmantier/television)
-- [zsh](https://github.com/zsh-users/zsh) + [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
-- [btop](https://github.com/aristocratos/btop)
-- [fabric](https://github.com/danielmiessler/fabric/tree/main)
-- [k9s](https://github.com/derailed/k9s)
-- [aerospace](https://github.com/nikitabobko/AeroSpace)
-- [to-obsidian-note](https://github.com/ithaquaKr/to-obsidian-note)
-
-## Setup
-
-### Requirements
-
-- All dependencies those tools needed.
-
-### Using CLI
-
-`ithactl` reads `links.conf` (one `name | source | destination | os` line per
-tool) and manages the symlinks. It needs nothing but bash (3.2+ is fine).
+## Quick start
 
 ```sh
-./ithactl list              # status of every config (ok / missing / wrong / file / nosrc / n/a)
-./ithactl list -q           # only the ones that need attention
-./ithactl apply             # link everything for this OS, never touching existing files
-./ithactl apply nvim zsh -b # link some, moving existing files aside (NAME.backup-<time>)
-./ithactl apply -w          # ...or overwrite existing files
-./ithactl apply -n          # dry run
-./ithactl remove nvim       # remove symlinks that point into this repo
-./ithactl adopt rex         # move an existing config into the repo and link it back
+git clone https://github.com/ithaquaKr/dev-environment-files.git ~/dev-environment-files
+cd ~/dev-environment-files
+
+./ithactl list          # see what is linked and what is not
+./ithactl apply -n      # dry run
+./ithactl apply         # link everything, never touching existing files
 ```
 
-To track a new tool: add a line to `links.conf`, then `./ithactl adopt <name>`
-(or put the files under `configs/` yourself and `./ithactl apply <name>`).
-Secrets stay out of the repo: keep them in `~/.config/zsh/secrets.zsh`, which
-`zshrc` sources if present.
+Install the tools themselves first (Homebrew, mise, and so on); this repo only
+holds their configuration. `ithactl` needs nothing but bash, and 3.2 is fine.
+
+## ithactl
+
+`ithactl` reads [`links.conf`](./links.conf), where each line is
+`name | source | destination | os`, and manages the symlinks.
+
+| Command                    | What it does                                                                                          |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `ithactl list [-q]`        | Status of every config: `ok`, `missing`, `wrong`, `file`, `nosrc` or `n/a`. `-q` shows only problems. |
+| `ithactl apply [NAME...]`  | Link configs (default: all for this OS). Leaves existing files alone.                                 |
+| `ithactl apply -b`         | Move existing files aside as `NAME.backup-<time>`, then link.                                         |
+| `ithactl apply -w`         | Overwrite existing files.                                                                             |
+| `ithactl apply -n`         | Dry run.                                                                                              |
+| `ithactl remove [NAME...]` | Remove symlinks that point into this repo; never deletes real files.                                  |
+| `ithactl adopt NAME`       | Move an existing config into the repo and link it back.                                               |
+
+`list` exits non-zero when something needs attention, so it doubles as a drift
+check.
+
+### Adding a tool
+
+1. Add a line to `links.conf`, for example
+   `lazygit | configs/lazygit/config.yml | ~/.config/lazygit/config.yml | any`.
+2. Run `./ithactl adopt lazygit` to move the live config into the repo, or put
+   the files under `configs/` yourself and run `./ithactl apply lazygit`.
+3. Check the files for secrets before you commit.
+
+## Layout
+
+```text
+.
+├── configs/       # one directory per tool
+├── links.conf     # source -> destination manifest
+├── ithactl        # symlink manager (plain bash)
+├── assets/        # screenshots
+└── fonts/         # Nerd Fonts used by the terminals
+```
+
+## Secrets
+
+Credentials never go in this repo. `zshrc` sources `~/.config/zsh/secrets.zsh`
+when it exists; keep tokens and passwords there as `export` lines. The file is
+not tracked. `.gitignore` also excludes `*.env`, `k9s` cluster configs and
+Rex's generated type stubs.
 
 ## Contributing
 
-Feel free to fork this repository and submit pull requests if you have
-improvements or new configurations that could enhance this setup.
-
-### Reporting issues
-
-If you encounter any issues, please open an issue on the [GitHub Issue Tracker](https://github.com/ithaquaKr/dev-environment-files/issues).
+Fork it and send a pull request if you find something worth improving. For
+bugs or ideas, open an issue on the
+[issue tracker](https://github.com/ithaquaKr/dev-environment-files/issues).
 
 ## License
 
-This repository is licensed under the MIT License.
+MIT. See [LICENSE](./LICENSE).
 
 ---
 
