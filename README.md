@@ -9,18 +9,6 @@ neutral greys plus a periwinkle accent (`#b1b9f9`).
 > These are my personal settings. Read them before you apply them, and use at
 > your own risk.
 
-## Preview
-
-![tmux with neofetch, lazydocker and btop](./assets/ss_3.png)
-
-|                                       |                                                   |
-| ------------------------------------- | ------------------------------------------------- |
-| ![nvim in ghostty](./assets/ss_2.png) | ![starship prompt and ithactl](./assets/ss_1.png) |
-
-> [!NOTE]
-> These screenshots are from June 2025 and predate the Silver Point Accent
-> palette and the `links.conf` version of `ithactl`.
-
 ## What's inside
 
 | Area        | Tools                                                                                                                                                                                                                    |
