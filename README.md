@@ -1,10 +1,8 @@
 # Ithadev's environment files
 
 This repository stores the dotfiles and configuration files for my development
-environments. It also includes a command-line tool built using
-[`bashly`](https://github.com/DannyBen/bashly), a framework for generating Bash
-command-line tools. The tool provides a streamlined way to manage and apply
-these configurations.
+environments. A small bash script, `ithactl`, symlinks them into place based on
+the manifest `links.conf`.
 
 > [!WARNING]
 > Don't blindly use my settings unless you know what that entails.
@@ -52,35 +50,24 @@ This repository includes configuration files for the following tools:
 
 ### Using CLI
 
-My repository support a bash script CLI tool offers the following features:
-
-- **List Available Configs**: List all configurations stored in the repository.
-- **Apply All Configs**: Apply all available configurations in one go.
-- **Apply Individual Configs**: Apply configurations for a single tool or service.
-- **Remove Configs**: Remove applied configurations from your environment.
+`ithactl` reads `links.conf` (one `name | source | destination | os` line per
+tool) and manages the symlinks. It needs nothing but bash (3.2+ is fine).
 
 ```sh
-❯ ./ithactl --help
-ithactl - Command Line Tools for using ithadev's environment files.
-
-Usage:
-  ithactl COMMAND
-  ithactl [COMMAND] --help | -h
-  ithactl --version | -v
-
-Commands:
-  list     List of configurations that can be applied.
-  apply    Apply configurations.
-  all      Apply all configurations.
-  remove   Remove configurations.
-
-Options:
-  --help, -h
-    Show this help
-
-  --version, -v
-    Show version number
+./ithactl list              # status of every config (ok / missing / wrong / file / nosrc / n/a)
+./ithactl list -q           # only the ones that need attention
+./ithactl apply             # link everything for this OS, never touching existing files
+./ithactl apply nvim zsh -b # link some, moving existing files aside (NAME.backup-<time>)
+./ithactl apply -w          # ...or overwrite existing files
+./ithactl apply -n          # dry run
+./ithactl remove nvim       # remove symlinks that point into this repo
+./ithactl adopt rex         # move an existing config into the repo and link it back
 ```
+
+To track a new tool: add a line to `links.conf`, then `./ithactl adopt <name>`
+(or put the files under `configs/` yourself and `./ithactl apply <name>`).
+Secrets stay out of the repo: keep them in `~/.config/zsh/secrets.zsh`, which
+`zshrc` sources if present.
 
 ## Contributing
 
