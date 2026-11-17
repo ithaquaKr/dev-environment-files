@@ -1,0 +1,69 @@
+[user]
+	name = Tuan Hiep
+	email = ithadev.nguyen@gmail.com
+	editor = code --wait
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+
+[core]
+	pager = hunk pager
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = decorations
+    navigate = true
+    side-by-side = true
+	minus-style = "syntax #3d1d24"
+	minus-non-emph-style = "syntax #3d1d24"
+	minus-emph-style = "syntax #7a2936"
+	minus-empty-line-marker-style = "normal #3d1d24"
+	plus-style = "syntax #1c3322"
+	plus-non-emph-style = "syntax #1c3322"
+	plus-emph-style = "syntax #225c2b"
+	line-numbers-minus-style = "#ff6b80"
+	line-numbers-plus-style = "#4eba65"
+	line-numbers-zero-style = "#666666"
+	line-numbers-left-style = "#333333"
+	line-numbers-right-style = "#333333"
+	syntax-theme = silver-accent
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+	commit-decoration-style = "bold #d77757 box ul"
+	file-style = "bold #b1b9f9 ul"
+    file-decoration-style = none
+	hunk-header-decoration-style = "#474747 box ul"
+	commit-style = "bold #d77757"
+	hunk-header-style = "file line-number #898989"
+[pager]
+	diff = hunk pager
+	log = less
+[alias]
+	m = machete
+[color "diff"]
+	old = "#ff6b80"
+	new = "#4eba65"
+	meta = "#b1b9f9 bold"
+	frag = "#6cb6ad"
+	func = "#898989"
+	commit = "#d77757"
+	whitespace = "#ff6b80 reverse"
+[color "status"]
+	added = "#4eba65"
+	changed = "#ffc107"
+	untracked = "#6cb6ad"
+	deleted = "#ff6b80"
+	branch = "#b1b9f9 bold"
+[color "branch"]
+	current = "#4eba65 bold"
+	local = "#b4b4b4"
+	remote = "#af87ff"
+[color "decorate"]
+	branch = "#4eba65 bold"
+	remoteBranch = "#af87ff"
+	tag = "#ffc107"
+	HEAD = "#6cb6ad bold"

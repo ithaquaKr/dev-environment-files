@@ -1,0 +1,62 @@
+theme = "custom"
+transparent_background = true
+mode = "unified"
+line_numbers = true
+wrap_lines = false
+hunk_headers = false
+menu_bar = true
+agent_notes = true
+copy_decorations = false
+cursor_line = "row"
+
+# Palette "Silver Point Accent" (see ~/.config/nvim/lua/plugins/teide.lua)
+[custom_theme]
+base = "graphite"    # graphite, midnight, paper, ember, catppuccin-latte, catppuccin-mocha
+label = "Silver Point Accent"
+background = "#131313"
+panel = "#1a1a1a"
+panelAlt = "#232323"
+border = "#333333"
+accent = "#b1b9f9"
+accentMuted = "#474747"
+text = "#b4b4b4"
+muted = "#898989"
+addedBg = "#1c3322"
+removedBg = "#3d1d24"
+addedContentBg = "#225c2b"
+removedContentBg = "#7a2936"
+addedSignColor = "#4eba65"
+removedSignColor = "#ff6b80"
+lineNumberFg = "#666666"
+selectedHunk = "#232323"
+badgeAdded = "#4eba65"
+badgeRemoved = "#ff6b80"
+badgeNeutral = "#898989"
+fileNew = "#4eba65"
+fileDeleted = "#ff6b80"
+fileRenamed = "#af87ff"
+fileModified = "#ffc107"
+fileUntracked = "#6cb6ad"
+noteBorder = "#d77757"
+noteTitleText = "#d77757"
+
+[custom_theme.syntax_scopes]
+"comment" = "#666666"
+"keyword" = "#af87ff"
+"storage" = "#af87ff"
+"string" = "#4eba65"
+"constant" = "#d77757"
+"constant.numeric" = "#d77757"
+"constant.language" = "#d77757"
+"constant.character.escape" = "#fd5db1"
+"entity.name.function" = "#b1b9f9"
+"support.function" = "#b1b9f9"
+"entity.name.type" = "#6cb6ad"
+"support.type" = "#6cb6ad"
+"entity.name.tag" = "#af87ff"
+"entity.other.attribute-name" = "#b4b4b4"
+"variable" = "#b4b4b4"
+"variable.parameter" = "#d6d6d6"
+"variable.language" = "#6cb6ad"
+"punctuation" = "#898989"
+"keyword.operator" = "#898989"

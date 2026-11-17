@@ -14,3 +14,7 @@ zshrc.local
 Brewfile.lock.json
 
 *.env
+
+# rex LSP type stubs (generated)
+configs/rex/types/
+configs/rex/.luarc.json

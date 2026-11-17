@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Silver Point Accent: grey neutrals of Rex's Silver Point Dark + Claude Code
+     accents (see ~/.config/nvim/lua/plugins/teide.lua). -->
+<plist version="1.0">
+<dict>
+  <key>name</key><string>Silver Point Accent</string>
+  <key>settings</key>
+  <array>
+    <dict><key>settings</key><dict>
+      <key>background</key><string>#131313</string>
+      <key>foreground</key><string>#b4b4b4</string>
+      <key>caret</key><string>#f4f4f4</string>
+      <key>selection</key><string>#363636</string>
+      <key>lineHighlight</key><string>#232323</string>
+      <key>gutter</key><string>#131313</string>
+      <key>gutterForeground</key><string>#666666</string>
+      <key>guide</key><string>#333333</string>
+    </dict></dict>
+    <dict><key>name</key><string>Comment</string><key>scope</key><string>comment, punctuation.definition.comment</string><key>settings</key><dict><key>foreground</key><string>#666666</string><key>fontStyle</key><string>italic</string></dict></dict>
+    <dict><key>name</key><string>String</string><key>scope</key><string>string, punctuation.definition.string</string><key>settings</key><dict><key>foreground</key><string>#4eba65</string></dict></dict>
+    <dict><key>name</key><string>Escape / regexp</string><key>scope</key><string>constant.character.escape, string.regexp</string><key>settings</key><dict><key>foreground</key><string>#fd5db1</string></dict></dict>
+    <dict><key>name</key><string>Number / constant</string><key>scope</key><string>constant.numeric, constant.language, constant.other, constant</string><key>settings</key><dict><key>foreground</key><string>#d77757</string></dict></dict>
+    <dict><key>name</key><string>Keyword</string><key>scope</key><string>keyword, storage, keyword.control</string><key>settings</key><dict><key>foreground</key><string>#af87ff</string><key>fontStyle</key><string>italic</string></dict></dict>
+    <dict><key>name</key><string>Operator / punctuation</string><key>scope</key><string>keyword.operator, punctuation</string><key>settings</key><dict><key>foreground</key><string>#898989</string></dict></dict>
+    <dict><key>name</key><string>Function</string><key>scope</key><string>entity.name.function, support.function, meta.function-call variable.function</string><key>settings</key><dict><key>foreground</key><string>#b1b9f9</string></dict></dict>
+    <dict><key>name</key><string>Type / class</string><key>scope</key><string>entity.name.type, entity.name.class, support.type, support.class, storage.type.primitive</string><key>settings</key><dict><key>foreground</key><string>#6cb6ad</string></dict></dict>
+    <dict><key>name</key><string>Builtin variable</string><key>scope</key><string>variable.language, support.variable</string><key>settings</key><dict><key>foreground</key><string>#6cb6ad</string></dict></dict>
+    <dict><key>name</key><string>Parameter</string><key>scope</key><string>variable.parameter</string><key>settings</key><dict><key>foreground</key><string>#d6d6d6</string></dict></dict>
+    <dict><key>name</key><string>Variable</string><key>scope</key><string>variable, variable.other</string><key>settings</key><dict><key>foreground</key><string>#b4b4b4</string></dict></dict>
+    <dict><key>name</key><string>Tag</string><key>scope</key><string>entity.name.tag</string><key>settings</key><dict><key>foreground</key><string>#af87ff</string></dict></dict>
+    <dict><key>name</key><string>Attribute / key</string><key>scope</key><string>entity.other.attribute-name, support.type.property-name, meta.mapping.key string</string><key>settings</key><dict><key>foreground</key><string>#b1b9f9</string></dict></dict>
+    <dict><key>name</key><string>Markup heading</string><key>scope</key><string>markup.heading, entity.name.section</string><key>settings</key><dict><key>foreground</key><string>#d77757</string><key>fontStyle</key><string>bold</string></dict></dict>
+    <dict><key>name</key><string>Markup bold</string><key>scope</key><string>markup.bold</string><key>settings</key><dict><key>foreground</key><string>#f4f4f4</string><key>fontStyle</key><string>bold</string></dict></dict>
+    <dict><key>name</key><string>Markup italic</string><key>scope</key><string>markup.italic</string><key>settings</key><dict><key>foreground</key><string>#b4b4b4</string><key>fontStyle</key><string>italic</string></dict></dict>
+    <dict><key>name</key><string>Markup link</string><key>scope</key><string>markup.underline.link, string.other.link</string><key>settings</key><dict><key>foreground</key><string>#b1b9f9</string><key>fontStyle</key><string>underline</string></dict></dict>
+    <dict><key>name</key><string>Markup code</string><key>scope</key><string>markup.raw</string><key>settings</key><dict><key>foreground</key><string>#6cb6ad</string></dict></dict>
+    <dict><key>name</key><string>Diff inserted</string><key>scope</key><string>markup.inserted</string><key>settings</key><dict><key>foreground</key><string>#4eba65</string></dict></dict>
+    <dict><key>name</key><string>Diff deleted</string><key>scope</key><string>markup.deleted</string><key>settings</key><dict><key>foreground</key><string>#ff6b80</string></dict></dict>
+    <dict><key>name</key><string>Diff changed</string><key>scope</key><string>markup.changed</string><key>settings</key><dict><key>foreground</key><string>#ffc107</string></dict></dict>
+    <dict><key>name</key><string>Diff header</string><key>scope</key><string>meta.diff.header, meta.diff.range</string><key>settings</key><dict><key>foreground</key><string>#b1b9f9</string></dict></dict>
+    <dict><key>name</key><string>Invalid</string><key>scope</key><string>invalid</string><key>settings</key><dict><key>foreground</key><string>#ff6b80</string></dict></dict>
+  </array>
+</dict>
+</plist>

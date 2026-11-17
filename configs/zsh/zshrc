@@ -85,6 +85,9 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
 
+# Private env vars (secrets) kept out of the repo
+[[ -f ~/.config/zsh/secrets.zsh ]] && source ~/.config/zsh/secrets.zsh
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -122,6 +125,16 @@ alias cat=bat
 alias kx=kubectx
 alias hf=helmfile
 alias ld=lazydocker
+alias huf='hunk diff'
+alias agd='argocd login argocd.basesystem.dev --username admin --password "$ARGOCD_PASSWORD" --grpc-web'
+alias ag=argocd
+# Trigger Jenkins basev3/build-image. -E pins the tool's .env so running from
+# another dir (which may have its own .env) still picks up the job token.
+alias tbb='/Users/ithaqua/work/base-inc/devsecops/tools/trigger_basev3_build.sh -E /Users/ithaqua/work/base-inc/devsecops/tools/.env'
+alias pwdp='pwd | pbcopy'
+alias hdw='hunk diff --watch'
+alias hdws='hunk diff --watch --staged'
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -234,20 +247,21 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --ansi \
   --layout=reverse \
   --border=none \
-  --color=border:#739fd4 \
-  --color=fg:#e7eaee \
-  --color=gutter:#13161a \
-  --color=header:#ffa064 \
-  --color=hl+:#ffa064 \
-  --color=hl:#ffa064 \
-  --color=info:#545c7e \
-  --color=marker:#b1a2ff \
-  --color=pointer:#b1a2ff \
-  --color=prompt:#ffa064 \
-  --color=query:#e7eaee:regular \
-  --color=scrollbar:#739fd4 \
-  --color=separator:#ffa064 \
-  --color=spinner:#b1a2ff \
+  --color=border:#333333 \
+  --color=fg:#b4b4b4 \
+  --color=gutter:-1 \
+  --color=header:#d77757 \
+  --color=hl+:#d77757 \
+  --color=hl:#d77757 \
+  --color=info:#666666 \
+  --color=marker:#af87ff \
+  --color=pointer:#b1b9f9 \
+  --color=prompt:#b1b9f9 \
+  --color=query:#f4f4f4:regular \
+  --color=scrollbar:#474747 \
+  --color=separator:#333333 \
+  --color=spinner:#af87ff \
+  --color=fg+:#f4f4f4,bg+:#232323 \
 "
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
@@ -291,6 +305,44 @@ function kdebug() {
     --overrides='{"spec":{"containers":[{"name":"netshoot-debug","image":"nicolaka/netshoot","stdin":true,"tty":true,"command":["/bin/bash"],"securityContext":{"capabilities":{"add":["NET_RAW"]}}}]}}' \
     "$@"
 }
+
+# Exec into a basev3 app pod: kexd|kexs|kexp <app> [component=backend] [command...=bash]
+#   kexd lead            -> deploy/lead-backend (dev)
+#   kexs lead worker     -> deploy/lead-worker (staging)
+#   kexp lead backend sh -> run sh instead of bash (production)
+function _kex() {
+  local ctx=$1 ns=$2 app=$3 comp=${4:-backend}
+  if [[ -z "$app" ]]; then
+    echo "usage: $funcstack[2] <app> [component=backend] [command...=bash]" >&2
+    return 1
+  fi
+  shift 3; (( $# )) && shift
+  (( $# )) || set -- bash
+  kubectl --context "$ctx" -n "$ns" exec -it "deploy/${app}-${comp}" -- "$@"
+}
+function kexd() { _kex gke_base-ggcloud-dev_asia-southeast1_base-ai-devstg-cluster core-services-dev "$@" }
+function kexs() { _kex gke_base-ggcloud-dev_asia-southeast1_base-ai-devstg-cluster core-services-staging "$@" }
+function kexp() { _kex gke_base-ggcloud-production_asia-southeast1_base-ai-cluster-production core-services-production "$@" }
+
+# Logs of a basev3 app pod: klogd|klogs|klogp <app> [component=backend] [kubectl logs flags...]
+#   klogd lead                      -> logs deploy/lead-backend (dev)
+#   klogs lead -f --tail=100        -> follow, last 100 lines (staging)
+#   klogp lead worker -f --since=5m -> deploy/lead-worker (production)
+function _klog() {
+  local ctx=$1 ns=$2 app=$3 comp=backend
+  if [[ -z "$app" ]]; then
+    echo "usage: $funcstack[2] <app> [component=backend] [kubectl logs flags, e.g. -f --tail=100 --since=5m]" >&2
+    return 1
+  fi
+  shift 3
+  if [[ -n "$1" && "$1" != -* ]]; then comp=$1; shift; fi
+  kubectl --context "$ctx" -n "$ns" logs "deploy/${app}-${comp}" "$@"
+}
+function klogd() { _klog gke_base-ggcloud-dev_asia-southeast1_base-ai-devstg-cluster core-services-dev "$@" }
+function klogs() { _klog gke_base-ggcloud-dev_asia-southeast1_base-ai-devstg-cluster core-services-staging "$@" }
+function klogp() { _klog gke_base-ggcloud-production_asia-southeast1_base-ai-cluster-production core-services-production "$@" }
+
+export KUBECTL_EXTERNAL_DIFF="dyff between --omit-header --set-exit-code"
 
 # Rename tmux window to remote hostname on SSH, restore auto-rename on exit
 function ssh() {
@@ -345,3 +397,26 @@ function dcd() {
 # opencode
 export PATH=/Users/ithaqua/.opencode/bin:$PATH
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# iximiuz lab
+export PATH=$PATH:/Users/ithaqua/.iximiuz/labctl/bin
+source <(labctl completion zsh)
+
+# chọn app bằng fzf; huỷ (Esc) thì trả rỗng
+agpick() { argocd app list -o name | fzf --prompt='argocd app> '; }
+
+# tên app lấy từ tham số, không có thì mở fzf
+_agapp() { local a=${1:-$(agpick)}; [[ -n $a ]] && print -r -- "$a"; }
+
+agget()  { local a; a=$(_agapp "$1") || return 1; argocd app get  "$a" -o tree; }
+agdiff() { local a; a=$(_agapp "$1") || return 1; argocd app diff "$a"; }
+agsync() { local a; a=$(_agapp "$1") || return 1; argocd app sync "$a" --preview-changes; }
+agsyncpn() { local a; a=$(_agapp "$1") || return 1; argocd app sync "$a" --preview-changes --prune; }
+agimg()  { local a; a=$(_agapp "$1") || return 1; argocd app get "$a" -o json | jq -r '.status.summary.images[]'; }
+
+# mọi app OutOfSync hoặc không Healthy
+agbad() {
+  argocd app list -o json | jq -r '.[]
+    | select(.status.sync.status!="Synced" or .status.health.status!="Healthy")
+    | [.metadata.name, .status.sync.status, .status.health.status] | @tsv' | column -t
+}
