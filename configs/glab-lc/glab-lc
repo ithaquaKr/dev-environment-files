@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# glab-lc - run glab against one of several GitLab hosts, token from env.
+#
+#   glab-lc @NAME <glab args>   use the host registered as NAME
+#   glab-lc <glab args>         use the host of the current repo's origin remote
+#   glab-lc --lc-list           show registered hosts and whether a token is set
+#
+# Hosts are listed in hosts.conf (name | host | token env var). If the token
+# var is empty (non-interactive shell), it is read from the zsh secrets file.
+# A repo whose remote is not registered falls through to plain glab.
+# Works with macOS's bash 3.2.
+set -euo pipefail
+
+CONF="${GLAB_LC_CONFIG:-$HOME/.config/glab-lc/hosts.conf}"
+SECRETS="${GLAB_LC_SECRETS:-$HOME/.config/zsh/secrets.zsh}"
+
+die() { echo "glab-lc: $*" >&2; exit 1; }
+
+[[ -f "$CONF" ]] || die "no host registry at $CONF"
+
+# Print "name host tokvar" for every registry line.
+entries() { sed -e 's/#.*//' -e 's/|/ /g' "$CONF" | awk 'NF == 3 { print $1, $2, $3 }'; }
+
+# lookup FIELD VALUE -> prints "name host tokvar" of the matching entry.
+lookup() { entries | awk -v f="$1" -v v="$2" '$f == v { print; exit }'; }
+
+# Token value: env first, then the zsh secrets file (it may use zsh syntax).
+token_of() {
+	local var="$1" val="${!1:-}"
+	if [[ -z "$val" && -f "$SECRETS" ]] && command -v zsh >/dev/null; then
+		val="$(zsh -fc 'source "$1" >/dev/null 2>&1; print -r -- "${(P)2}"' _ "$SECRETS" "$var")"
+	fi
+	printf '%s' "$val"
+}
+
+# Host of the origin remote: git@h:p, ssh://git@h:port/p, https://h/p.
+remote_host() {
+	local url
+	url="$(git remote get-url origin 2>/dev/null)" || return 1
+	url="${url#*://}"; url="${url#*@}"
+	url="${url%%/*}"; url="${url%%:*}"
+	[[ -n "$url" ]] && printf '%s' "$url"
+}
+
+if [[ "${1:-}" == "--lc-list" ]]; then
+	entries | while read -r name host var; do
+		[[ -n "$(token_of "$var")" ]] && t="token ok" || t="TOKEN MISSING ($var)"
+		printf '%-10s %-24s %s\n' "@$name" "$host" "$t"
+	done
+	exit 0
+fi
+
+entry=""
+if [[ "${1:-}" == @* ]]; then
+	name="${1#@}"; shift
+	entry="$(lookup 1 "$name")"
+	[[ -n "$entry" ]] || die "unknown host @$name (see: glab-lc --lc-list)"
+elif host="$(remote_host)"; then
+	entry="$(lookup 2 "$host")"
+fi
+
+# Not a registered host: behave exactly like glab.
+[[ -n "$entry" ]] || exec glab "$@"
+
+read -r name host var <<<"$entry"
+token="$(token_of "$var")"
+[[ -n "$token" ]] || die "@$name: \$$var is empty; set it in $SECRETS"
+
+GITLAB_HOST="$host" GITLAB_TOKEN="$token" exec glab "$@"
