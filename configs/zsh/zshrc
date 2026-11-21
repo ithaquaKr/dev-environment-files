@@ -134,6 +134,7 @@ alias tbb='/Users/ithaqua/work/base-inc/devsecops/tools/trigger_basev3_build.sh 
 alias pwdp='pwd | pbcopy'
 alias hdw='hunk diff --watch'
 alias hdws='hunk diff --watch --staged'
+alias reworkpc='ssh ithaqua@100.124.101.22'
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
