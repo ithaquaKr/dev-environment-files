@@ -7,7 +7,7 @@ add_newline = true
 # Rex's Silver Point Dark maps every ANSI color to grey, so this palette
 # overrides the color names that starship modules use with hex values.
 palette = "silver_accent"
-command_timeout = 200
+command_timeout = 1000
 # jj-aware prompt (https://github.com/jj-vcs/jj/wiki/Starship): in a jj repo
 # (colocated included) show the jj change; elsewhere show the native git
 # modules. Order matters, so the vcs modules are listed explicitly and $all
