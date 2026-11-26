@@ -141,6 +141,11 @@ alias reworkpc='ssh ithaqua@100.124.101.22'
 # Inside a repo, plain `glab-lc` picks the host from the origin remote.
 alias glabbase='glab-lc @base'
 alias glabrework='glab-lc @rework'
+# glab's pager (overrides glab_pager in glab's config.yml): `glab mr diff`
+# opens in Hunk; non-diff output (mr view, ...) passes through as plain text.
+export GLAB_PAGER='hunk pager'
+# Same for gh: `gh pr diff` opens in Hunk.
+export GH_PAGER='hunk pager'
 # (completion for glab/glab-lc is set up after the final compinit below)
 
 
