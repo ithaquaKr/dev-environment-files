@@ -1,21 +1,23 @@
 -- ctrl+h/j/k/l: move between Neovim splits, then out to the multiplexer pane.
--- Inside Rex ($REX_SESSION set) the edge hands focus to Rex with `rex focus`
+-- Inside Rex ($REX_BLOCK set) the edge hands focus to Rex with `rex focus`
 -- (pairs with the `navigate` action in ~/.config/rex/actions.lua); elsewhere
--- vim-tmux-navigator handles tmux as before.
+-- vim-tmux-navigator handles tmux as before. Rex no longer exports
+-- $REX_SESSION to panes; a block ID works anywhere `-s` takes a session.
 
 local tmux_cmds = { h = "TmuxNavigateLeft", j = "TmuxNavigateDown", k = "TmuxNavigateUp", l = "TmuxNavigateRight" }
 local rex_dirs = { h = "left", j = "down", k = "up", l = "right" }
 
 local function navigate(key)
   return function()
-    if not vim.env.REX_SESSION then
+    local rex_target = vim.env.REX_BLOCK or vim.env.REX_SESSION
+    if not rex_target then
       vim.cmd(tmux_cmds[key])
       return
     end
     local win = vim.api.nvim_get_current_win()
     vim.cmd("wincmd " .. key)
     if vim.api.nvim_get_current_win() == win then
-      vim.system({ "rex", "focus", rex_dirs[key], "-s", vim.env.REX_SESSION })
+      vim.system({ "rex", "focus", rex_dirs[key], "-s", rex_target })
     end
   end
 end
